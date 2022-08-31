@@ -1,0 +1,22 @@
+//custom variables
+$red:     #d63384 !default;
+
+
+//import the functions & variables
+@import '../../node_modules/bootstrap/scss/_functions';
+@import '../../node_modules/bootstrap/scss/_variables';
+
+$h7-font-size: $font-size-base* 0.75 !default;
+$h8-font-size: $font-size-base* 0.65 !default;
+
+$custom-theme-colors: (
+    "Basetext" : #757575
+);
+$custom-font-sizes: (
+    7: $h7-font-size,
+    8: $h8-font-size
+);
+$font-sizes: map-merge($custom-font-sizes, $font-sizes);
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+// import bootstrap
+@import '../../node_modules/bootstrap/scss/bootstrap';
