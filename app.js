@@ -16,7 +16,21 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
-app.engine('hbs', exhbs.engine({ extname: '.hbs' }));
+const hbs = exhbs.create({ 
+    extname: '.hbs',
+    helpers: {
+        select : function (value, options) {
+            return options.fn()
+              .split('\n')
+              .map(function (v) {
+                var t = 'value="' + value + '"';
+                return RegExp(t).test(v) ? v.replace(t, t + ' selected="selected"') : v;
+              })
+              .join('\n');
+          }
+    }
+ });
+app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
 //connection pool

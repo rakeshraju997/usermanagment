@@ -8,6 +8,8 @@ router.get('/admin',authUser(),authUserRole(['admin']),adminController.adminDash
 router.get('/admin/userlist',authUser(),authUserRole(['admin']),adminController.userList);
 router.get('/admin/adduser',authUser(),authUserRole(['admin']),adminController.adduserform);
 router.post('/admin/adduser',authUser(),authUserRole(['admin']),adminController.adduser);
+router.get('/admin/updateuser/:id',authUser(),authUserRole(['admin']),adminController.updateuserform);
+router.post('/admin/updateuser/:id',authUser(),authUserRole(['admin']),adminController.updateuser);
 // router.get('/admin',adminController.adminDash);
 
 module.exports = router;

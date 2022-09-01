@@ -13,7 +13,6 @@ const pool = mysql.createPool({
   // Display login page
   exports.index = (req, res) => {
     session = req.session;
-    console.log('ff'+session);
     if(session.userid && session.role != ''){
       res.redirect('/'+session.role);
     }else{

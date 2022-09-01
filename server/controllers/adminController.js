@@ -21,12 +21,12 @@ exports.adminDash = (req, res) => {
         console.log('Connected as ID ' + connection.threadId);
 
         //User the connection
-        connection.query('SELECT * FROM users WHERE id = ?', [session.userid], (err, rows, field) => {
+        connection.query('SELECT * FROM users WHERE id = ?', [session.userid], (err, logineduser, field) => {
 
             //when done with the connection,release it
             connection.release();
-            if (!err && rows.length > 0) {
-                res.render('admin', { loginPage: true, rows });
+            if (!err && logineduser.length > 0) {
+                res.render('admin', { loginPage: true, logineduser });
             }
 
         });
@@ -43,13 +43,13 @@ exports.userList = (req, res) => {
         console.log('Connected as ID ' + connection.threadId);
 
         //User the connection
-        connection.query('SELECT * FROM users WHERE id = ?', [session.userid], (err, rows, field) => {
+        connection.query('SELECT * FROM users WHERE id = ?', [session.userid], (err, logineduser, field) => {
 
             //when done with the connection,release it
 
-            if (!err && rows.length > 0) {
+            if (!err && logineduser.length > 0) {
                 connection.query('SELECT * FROM users ORDER BY id', (err, usersRow, field) => {
-                    res.render('userlist', { loginPage: true, rows, usersRow });
+                    res.render('userlist', { loginPage: true, logineduser, usersRow });
 
                 });
 
@@ -70,13 +70,13 @@ exports.adduserform = (req, res) => {
         console.log('Connected as ID ' + connection.threadId);
 
         //User the connection
-        connection.query('SELECT * FROM users WHERE id = ?', [session.userid], (err, rows, field) => {
+        connection.query('SELECT * FROM users WHERE id = ?', [session.userid], (err, logineduser, field) => {
 
             //when done with the connection,release it
             connection.release();
 
-            if (!err && rows.length > 0) {
-                res.render('adduser', { loginPage: true, rows });
+            if (!err && logineduser.length > 0) {
+                res.render('adduser', { loginPage: true, logineduser });
             }
         });
     });
@@ -87,8 +87,8 @@ exports.adduser = (req, res) => {
     session = req.session;
     const { firstname, lastname, email, role, password, cpassword } = req.body;
     if (password != cpassword) {
-            loginedUser(session, function(rows){
-                res.render('adduser', { loginPage: true, alertcolor : 'danger', alert: 'Password not matching', rows });
+            loginedUser(session, function(logineduser){
+                res.render('adduser', { loginPage: true, alertcolor : 'danger', alert: 'Password not matching', logineduser });
             });
     } else {
         // connect to DB
@@ -101,11 +101,11 @@ exports.adduser = (req, res) => {
 
                 //when done with the connection,release it
                 connection.release();
-                loginedUser(session, function(rows){
+                loginedUser(session, function(logineduser){
                     if (!err) {
-                        res.render('adduser', { loginPage: true, alertcolor: 'success', alert: 'User added succefully.', rows });
+                        res.render('adduser', { loginPage: true, alertcolor: 'success', alert: 'User added succefully.', logineduser });
                     } else {
-                        res.render('adduser', { loginPage: true, alertcolor: 'danger', alert: 'Check your details.', rows });
+                        res.render('adduser', { loginPage: true, alertcolor: 'danger', alert: 'Check your details.', logineduser });
                     }
                 });
             });
@@ -125,6 +125,44 @@ function loginedUser(session, callback){
             if (!err && rows.length > 0) {
                 callback(rows);
             }
+        });
+    });
+}
+exports.updateuserform = (req, res) =>{
+    session = req.session;
+    loginedUser(session, function(logineduser){
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            console.log('Connected as ID ' + connection.threadId);
+            connection.query('SELECT * FROM users WHERE id = ?',[req.params.id], (err, rows, field) => {
+                //when done with the connection,release it
+                connection.release();
+                if (!err && rows.length > 0) {
+                    res.render('updateuser', { loginPage: true, logineduser, rows});
+                }
+            });
+        });
+    });
+}
+
+exports.updateuser = (req, res) => {
+    session = req.session;
+    const { firstname, lastname, email, role, password, cpassword } = req.body;
+    loginedUser(session, function(logineduser){
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            console.log('Connected as ID ' + connection.threadId);
+            connection.query('UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, role = ? WHERE id = ?', [firstname, lastname, email, password, role, req.params.id], (err, rows) => {
+                //when done with the connection,release it
+                connection.release();
+                if (!err) {
+                    res.render('updateuser', { loginPage: true, logineduser, alertcolor: 'success', alert: 'User '+firstname+' Updated succefully.', closeform: true, logineduser});
+                }else{
+                    res.render('updateuser', { loginPage: true, logineduser, alertcolor: 'danger', alert: 'Check your details.', closeform: true, logineduser});
+                }
+            });
         });
     });
 }
