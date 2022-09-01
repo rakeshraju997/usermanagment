@@ -48,7 +48,7 @@ exports.userList = (req, res) => {
             //when done with the connection,release it
 
             if (!err && logineduser.length > 0) {
-                connection.query('SELECT * FROM users ORDER BY id', (err, usersRow, field) => {
+                connection.query('SELECT * FROM users WHERE status = "active" ORDER BY id', (err, usersRow, field) => {
                     res.render('userlist', { loginPage: true, logineduser, usersRow });
 
                 });
@@ -179,6 +179,24 @@ exports.viewuser = (req, res) =>{
                 connection.release();
                 if (!err && rows.length > 0) {
                     res.render('viewuser', { loginPage: true, logineduser, rows});
+                }
+            });
+        });
+    });
+}
+
+exports.deleteuser = (req, res) =>{
+    session = req.session;
+    loginedUser(session, function(logineduser){
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            console.log('Connected as ID ' + connection.threadId);
+            connection.query('UPDATE users SET status =? WHERE id = ?',['inactive',req.params.id], (err, rows, field) => {
+                //when done with the connection,release it
+                connection.release();
+                if (!err) {
+                    res.render('userlist', { loginPage: true, logineduser, alertcolor: 'success', alert:'User Removed succefully.'});
                 }
             });
         });

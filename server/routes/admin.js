@@ -10,7 +10,7 @@ router.get('/admin/adduser',authUser(),authUserRole(['admin']),adminController.a
 router.post('/admin/adduser',authUser(),authUserRole(['admin']),adminController.adduser);
 router.get('/admin/updateuser/:id',authUser(),authUserRole(['admin']),adminController.updateuserform);
 router.post('/admin/updateuser/:id',authUser(),authUserRole(['admin']),adminController.updateuser);
-// router.get('/admin/delete/:id',authUser(),authUserRole(['admin']),adminController.delete);
+router.get('/admin/deleteuser/:id',authUser(),authUserRole(['admin']),adminController.deleteuser);
 router.get('/admin/viewuser/:id',authUser(),authUserRole(['admin']),adminController.viewuser);
 // router.get('/admin',adminController.adminDash);
 
