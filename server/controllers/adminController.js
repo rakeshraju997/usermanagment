@@ -166,3 +166,21 @@ exports.updateuser = (req, res) => {
         });
     });
 }
+
+exports.viewuser = (req, res) =>{
+    session = req.session;
+    loginedUser(session, function(logineduser){
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            console.log('Connected as ID ' + connection.threadId);
+            connection.query('SELECT * FROM users WHERE id = ?',[req.params.id], (err, rows, field) => {
+                //when done with the connection,release it
+                connection.release();
+                if (!err && rows.length > 0) {
+                    res.render('viewuser', { loginPage: true, logineduser, rows});
+                }
+            });
+        });
+    });
+}
