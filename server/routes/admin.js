@@ -12,6 +12,10 @@ router.get('/admin/updateuser/:id',authUser(),authUserRole(['admin']),adminContr
 router.post('/admin/updateuser/:id',authUser(),authUserRole(['admin']),adminController.updateuser);
 router.get('/admin/deleteuser/:id',authUser(),authUserRole(['admin']),adminController.deleteuser);
 router.get('/admin/viewuser/:id',authUser(),authUserRole(['admin']),adminController.viewuser);
-// router.get('/admin',adminController.adminDash);
+
+router.get('/admin/templatelist',authUser(),authUserRole(['admin']),adminController.templatelist);
+
+
+
 
 module.exports = router;

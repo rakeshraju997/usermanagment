@@ -202,3 +202,22 @@ exports.deleteuser = (req, res) =>{
         });
     });
 }
+
+// Display admin dash page
+exports.templatelist = (req, res) => {
+    session = req.session;
+    loginedUser(session, function(logineduser){
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            console.log('Connected as ID ' + connection.threadId);
+            connection.query('SELECT * FROM template_main ORDER BY id', (err, templateRow, field) => {
+                //when done with the connection,release it
+                connection.release();
+                if (!err) {
+                    res.render('templatelist', { loginPage: true, logineduser, templateRow});
+                }
+            });
+        });
+    });
+}
