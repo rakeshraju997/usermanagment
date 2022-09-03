@@ -14,7 +14,9 @@ router.get('/admin/deleteuser/:id',authUser(),authUserRole(['admin']),adminContr
 router.get('/admin/viewuser/:id',authUser(),authUserRole(['admin']),adminController.viewuser);
 
 router.get('/admin/templatelist',authUser(),authUserRole(['admin']),adminController.templatelist);
-
+router.post('/admin/addtemplate',authUser(),authUserRole(['admin']),adminController.addtemplate);
+router.get('/admin/addtemplate',authUser(),authUserRole(['admin']),adminController.addtemplatedisplay);
+router.post('/admin/addskills',authUser(),authUserRole(['admin']),adminController.addskills);
 
 
 

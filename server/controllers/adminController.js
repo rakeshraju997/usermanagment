@@ -1,4 +1,3 @@
-// const session = require('express-session');
 const mysql = require('mysql');
 
 
@@ -219,5 +218,48 @@ exports.templatelist = (req, res) => {
                 }
             });
         });
+    });
+}
+
+// Display admin dash page
+exports.addtemplate = (req, res) => {
+    session = req.session;
+    const {template} =req.body;
+    console.log(template)
+    loginedUser(session, function (logineduser) {
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            console.log('Connected as ID ' + connection.threadId);
+            connection.query('INSERT INTO template_main SET template = ?',[template], (err, result, field) => {
+                //when done with the connection,release it
+                connection.release();
+                console.log(result.insertId);
+                if (!err) {
+                    res.render('addtemplate', { loginPage: true, logineduser, templateID: result.insertId});
+                }else{
+                    console.log(err);
+                }
+            });
+        });
+        
+    });
+}
+// Display admin dash page
+exports.addtemplatedisplay = (req, res) => {
+    session = req.session;
+    loginedUser(session, function (logineduser) {
+        res.render('addtemplate', { loginPage: true, logineduser});     
+        
+    });
+}
+
+exports.addskills = (req, res) =>{
+    session = req.session;
+    const { skill1, skill2, dskill1, dskill2, templateID} = req.body;
+    console.log(skill1+' '+ skill2+' '+ dskill1+' '+ dskill2+' '+templateID);
+    loginedUser(session, function (logineduser) {
+        res.render('addtemplate', { loginPage: true, logineduser});     
+        
     });
 }

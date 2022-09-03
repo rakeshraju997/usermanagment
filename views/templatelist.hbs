@@ -1,7 +1,7 @@
 <div class="d-flex m-2">
     <h1 class="col-3">Templates</h1>
     <span class="col-9  d-flex justify-content-end">
-        <a href="/admin/" type="button" class="btn btn-primary p-2 d-flex align-items-center">Add Template</a>
+        <a href="/admin/addtemplate" type="button" class="btn btn-primary p-2 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addtemplate">Add Template</a>
     </span>
 
 </div>
@@ -46,3 +46,28 @@
         {{/each}}
     </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="addtemplate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/admin/addtemplate" class="mb-0" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Enter Template Name</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        {{!-- <label for="exampleInputPassword1" class="form-label">Password</label> --}}
+                        <input type="text" class="form-control" placeholder="Name..." name="template">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary deleteconfirm">Next</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
