@@ -253,13 +253,38 @@ exports.addtemplatedisplay = (req, res) => {
         
     });
 }
-
-exports.addskills = (req, res) =>{
+//add skill set
+exports.addskills = (req, res) =>{      //need to fix empty data entry
     session = req.session;
-    const { skill1, skill2, dskill1, dskill2, templateID} = req.body;
-    console.log(skill1+' '+ skill2+' '+ dskill1+' '+ dskill2+' '+templateID);
+    const { templateID } = req.body ; //fetch skill id
+    delete req.body.templateID ; //remove skill id
+    //create query from re.body
+    req.body = JSON.parse(JSON.stringify(req.body));
+    let query = 'INSERT INTO `template_lists` (`id`,`list_items`,`description`,`template_id`) VALUES'; 
+    for (var key in req.body) {
+        if (req.body.hasOwnProperty(key)) {
+          let value = req.body[key];
+          value = value.toString().split(',');
+          value = value[0]+"','"+value[1];
+          query+="(NULL,'"+value+"',"+templateID+"),"
+          
+        }
+    }
+    query = query.slice(0, -1); // remove `,` at the end of the string
     loginedUser(session, function (logineduser) {
-        res.render('addtemplate', { loginPage: true, logineduser});     
-        
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+
+            connection.query(query, (err, result, field) => {
+                //when done with the connection,release it
+                connection.release();
+                if (!err) {
+                    res.render('addtemplate', { loginPage: true, logineduser, alertcolor: 'success', alert:'Skill Added succefully.'});
+                }else{
+                    console.log(err);
+                }
+            });
+        });        
     });
 }
