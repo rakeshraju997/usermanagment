@@ -1,0 +1,41 @@
+<h5 class="fw-semibold text-headtext">Add Sequence</h5>
+{{#if alert}}
+<div class="alert alert-{{alertcolor}} alert-dismissible fade show" role="alert">
+    {{alert}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{{/if}}
+<div class="row border rounded ">
+    <form action="/admin/updateskills/{{templateID}}" method="POST" id="skillsform">
+        {{#each list }}
+            <input type="hidden" name="skill{{inc @index}}" value="{{this.id}}">
+            <div class="row mt-2">
+                <div class="col-sm-12 col-md-4">
+                    <span class="fw-semibold text-headtext">Name</span>
+                    <span class="d-flex align-items-center"><i class="material-icons me-2">#{{inc @index}}</i>
+                        <input type="text" class="form-control my-2" name="skill{{inc @index}}" value="{{this.list_items}}" aria-label="First name">
+                    </span>
+                </div>
+                <div class="col-sm-12 col-md-8">
+                    <span class="fw-semibold text-headtext">Content</span>
+                    <textarea type="textarea" cols="2" rows="1" class="form-control my-2" placeholder="Description" name="skill{{inc @index}}"
+                        aria-label="Description">{{this.description}}</textarea>
+                </div>
+            </div>
+            {{#setVar "lastid" @index}}{{/setVar}}
+        {{/each}}
+        <div id="additionalrow"></div>
+        <div>
+            <button type="button" id="addnewrow" class="btn btn-primary">+</button>
+            <button type="submit" class="btn btn-primary" id="submitskill">Save</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    let count = {{lastid}}+2;
+    $("#addnewrow").click(function () {
+        $("#additionalrow").append('<input type="hidden" name="skill'+count+'" value=""><div class="row mt-2"><div class="col-sm-12 col-md-4"><span class="d-flex align-items-center"><i class="material-icons me-2">#' + count + '</i><input type="text" class="form-control my-2" name="skill' + count + '" aria-label="First name"></span></div><div class="col-sm-12 col-md-8"><textarea type="textarea" cols="2" rows="1" class="form-control my-2 ui-input-text" placeholder="Description" name="skill' + count + '" aria-label="Description"></textarea></div></div>');
+        count += 1;
+    });
+</script>

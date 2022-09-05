@@ -2,7 +2,12 @@
 {{#each main}}
 <h3>{{this.template}}</h3>
 {{/each}}
-
+{{#if alert}}
+<div class="alert alert-{{alertcolor}} alert-dismissible fade show" role="alert">
+    {{alert}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{{/if}}
 <div class="row card">
     {{#each list}}
     <div class="card-body">

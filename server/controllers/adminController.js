@@ -314,3 +314,74 @@ exports.viewskills = (req, res) =>{
         
     });
 }
+
+
+//add skill set
+exports.updateskillsform = (req, res) =>{      //need to fix empty data entry
+    session = req.session;
+    loginedUser(session, function (logineduser) {
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            connection.query('SELECT * FROM template_main WHERE id = ?',[req.params.id], (err, main, field) => {
+                if (!err) {
+                    connection.query('SELECT * FROM template_lists WHERE template_id = ?',[req.params.id], (err, list, field) => {
+                    //when done with the connection,release it
+                    connection.release();
+                        res.render('updateskills', { loginPage: true, logineduser, main, list, templateID : req.params.id });
+                    });  
+                }else{
+                    console.log(err);
+                }
+            });
+        });       
+        
+    });
+}
+
+//add skill set
+exports.updateskills = (req, res) =>{      //need to fix empty data entry
+    session = req.session;
+    let templateID  = req.params.id ;
+    req.body = JSON.parse(JSON.stringify(req.body));
+    let query = 'INSERT INTO `template_lists` (`id`,`list_items`,`description`,`template_id`) VALUES'; 
+    for (var key in req.body) {
+        if (req.body.hasOwnProperty(key)) {
+          let value = req.body[key];
+          value = value.toString().split(',');
+          console.log(value[0])
+          if(value[0] == ''){
+            value[0] = 'NULL';
+          }
+          value = value[0]+",'"+value[1]+"','"+value[2];
+          query+="("+value+"',"+templateID+"),"
+          
+        }
+    }
+    query = query.slice(0, -1)+"ON DUPLICATE KEY UPDATE id = VALUES(id), list_items = VALUES(list_items), description = VALUES(description), template_id = VALUES(template_id)";
+    loginedUser(session, function (logineduser) {
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            connection.query(query, (err, field) => {
+                if(!err){
+                    connection.query('SELECT * FROM template_main WHERE id = ?',[req.params.id], (err, main, field) => {
+
+                        if (!err) {
+                            connection.query('SELECT * FROM template_lists WHERE template_id = ?',[req.params.id], (err, list, field) => {
+                            //when done with the connection,release it
+                            connection.release();
+                                res.render('viewskills', { loginPage: true, logineduser, main, list, alertcolor: 'success', alert:'Skills updated succefully.'});
+                            });  
+                        }else{
+                            console.log(err);
+                        }
+                    });
+                }else{
+                    res.render('viewskills', { loginPage: true, logineduser, alertcolor: 'danger', alert:'Update Failed!'});
+                }
+                
+            });
+        });       
+    });
+}
