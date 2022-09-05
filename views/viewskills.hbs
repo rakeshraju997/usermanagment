@@ -1,0 +1,13 @@
+
+{{#each main}}
+<h3>{{this.template}}</h3>
+{{/each}}
+
+<div class="row card">
+    {{#each list}}
+    <div class="card-body">
+        <div class="col-md-4 col-sm-12 fw-semibold text-headtext">{{this.list_items}}</div>
+        <div class="col-md-8 col-sm-12 fw-semibold ">{{this.description}}</div>
+    </div>
+    {{/each}}
+</div>

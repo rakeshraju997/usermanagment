@@ -18,6 +18,7 @@ router.post('/admin/addtemplate',authUser(),authUserRole(['admin']),adminControl
 router.get('/admin/addtemplate',authUser(),authUserRole(['admin']),adminController.addtemplatedisplay);
 router.post('/admin/addskills',authUser(),authUserRole(['admin']),adminController.addskills);
 
+router.get('/admin/viewskills/:id',authUser(),authUserRole(['admin']),adminController.viewskills);
 
 
 module.exports = router;

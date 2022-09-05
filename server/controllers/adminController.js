@@ -288,3 +288,29 @@ exports.addskills = (req, res) =>{      //need to fix empty data entry
         });        
     });
 }
+
+exports.viewskills = (req, res) =>{
+    session = req.session;
+    loginedUser(session, function (logineduser) {
+
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+
+            connection.query('SELECT * FROM template_main WHERE id = ?',[req.params.id], (err, main, field) => {
+
+                if (!err) {
+                    connection.query('SELECT * FROM template_lists WHERE template_id = ?',[req.params.id], (err, list, field) => {
+                    //when done with the connection,release it
+                    connection.release();
+                    console.log(main, list)
+                        res.render('viewskills', { loginPage: true, logineduser, main, list });
+                    });  
+                }else{
+                    console.log(err);
+                }
+            });
+        });       
+        
+    });
+}
