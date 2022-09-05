@@ -27,6 +27,13 @@ const hbs = exhbs.create({
                 return RegExp(t).test(v) ? v.replace(t, t + ' selected="selected"') : v;
               })
               .join('\n');
+          },
+          inc : function(value, options)
+          {
+              return parseInt(value) + 1;
+          },
+          setVar : function (varName, varValue, options){
+            options.data.root[varName] = varValue;
           }
     }
  });
