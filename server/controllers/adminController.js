@@ -460,3 +460,30 @@ exports.assignskill = (req, res) =>{
         
     });
 }
+
+exports.skillaction = (req, res) =>{
+    session = req.session;
+
+    loginedUser(session, function (logineduser) {
+
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+
+            connection.query('SELECT * FROM template_main WHERE template = ?',[req.params.skillset], (err, main, field) => {
+
+                if (!err) {
+                    connection.query('SELECT * FROM template_lists WHERE template_id = ?',[main[0].id], (err, list, field) => {
+                    //when done with the connection,release it
+                    connection.release();
+                    console.log(main[0].id)
+                        res.render('viewskills', { loginPage: true, logineduser, main, list });
+                    });  
+                }else{
+                    console.log(err);
+                }
+            });
+        });       
+        
+    });
+}

@@ -50,8 +50,15 @@
                 </div>
             </td>
             <td class="col align-left p-3">
-                <div class="d-flex flex-row align-items-center">{{#each this.template_assigned}}{{this}}<br>{{/each}}</div>
-                
+                <div class="d-flex flex-row align-items-center">
+                    <ul class="list-unstyled ">
+                        {{#each this.template_assigned}}
+                        <li class="list-group-item fs-7">
+                            <a class="d-inline" href="/admin/skillaction/{{this}}/{{../this.id}}">{{this}}</a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
             </td>
             <td class="col align-left p-3">
                 <div class="d-flex align-items-center ">
