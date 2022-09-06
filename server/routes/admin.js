@@ -22,5 +22,6 @@ router.get('/admin/viewskills/:id',authUser(),authUserRole(['admin']),adminContr
 router.get('/admin/updateskills/:id',authUser(),authUserRole(['admin']),adminController.updateskillsform);
 router.post('/admin/updateskills/:id',authUser(),authUserRole(['admin']),adminController.updateskills);
 
+router.post('/admin/assignskill/:id',authUser(),authUserRole(['admin']),adminController.assignskill);
 
 module.exports = router;

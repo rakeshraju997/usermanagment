@@ -41,6 +41,8 @@
                     <a type="button" href="/admin/viewuser/{{this.id}}" class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">View</a>
                     <a type="button" href="/admin/updateuser/{{this.id}}" class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">Update</a>
                     <a type="button" class="deleteuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold" data-bs-toggle="modal" data-id="{{this.id}}" data-bs-target="#deleteusermodel">Delete</a>
+                    <a type="button" class="assignuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold" data-bs-toggle="modal" data-id="{{this.id}}" data-bs-target="#assignskillmodel">Assign</a>
+                
                 </div>
 
             </td>
@@ -49,7 +51,7 @@
     </tbody>
 </table>
 
-<!-- Modal -->
+<!-- Modal User Delete-->
 <div class="modal fade" id="deleteusermodel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -68,9 +70,39 @@
   </div>
 </div>
 
+<!-- Modal Skill Assign-->
+<div class="modal fade" id="assignskillmodel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/admin/assignskill/" class="mb-0 assignform" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Select Skill Set</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <select class="form-select text-basetext" name="skill">
+                        {{#each skilllist}}
+                        <option value="{{this.id}}">{{this.template}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
-  $(document).on("click", ".deleteuser", function () {
+    $(document).on("click", ".deleteuser", function () {
      var userID = $(this).data('id');
      $(".deleteconfirm").attr("href", '/admin/deleteuser/'+userID );
-});
+    });
+    $(document).on("click", ".assignuser", function () {
+     var userID = $(this).data('id');
+     $(".assignform").attr("action", '/admin/assignskill/'+userID );
+    });
 </script>
