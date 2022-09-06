@@ -55,8 +55,22 @@ exports.userList = (req, res) => {
 
             if (!err && logineduser.length > 0) {
                 connection.query('SELECT * FROM users WHERE status = "active" ORDER BY id', (err, usersRow, field) => {
+                    let assignedlist = new Array;
+                    // console.log(assigned)
                     listSkills(function(skilllist){ //for displaying skill list in the assign popup
-                        res.render('userlist', { loginPage: true, logineduser, alertcolor, alert, usersRow, skilllist});
+                        //for displaying assigned skillset in userlist
+                        usersRow.forEach(element => {   
+                            assigned = element.template_assigned.toString().split('/');
+                            assigned.forEach(assignedskills =>{
+                                if(assignedskills != ''){
+                                    assignedlist.push(skilllist[assignedskills-1].template);
+                                }
+                            })
+                            element.template_assigned = assignedlist;
+                            assignedlist = [];
+                        });
+                        //for displaying assigned skillset in userlist
+                        res.render('userlist', { loginPage: true, logineduser, alertcolor, alert, skilllist, usersRow});
                     }) 
                 });
 
