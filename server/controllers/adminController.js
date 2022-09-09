@@ -195,11 +195,26 @@ exports.viewuser = (req, res) =>{
         pool.getConnection((err, connection) => {
             if (err) throw err; // not connected
             console.log('Connected as ID ' + connection.threadId);
-            connection.query('SELECT * FROM users WHERE id = ?',[req.params.id], (err, rows, field) => {
+            connection.query('SELECT * FROM users WHERE id = ?',[req.params.id], (err, usersRow, field) => {
                 //when done with the connection,release it
                 connection.release();
-                if (!err && rows.length > 0) {
-                    res.render('viewuser', { loginPage: true, logineduser, rows});
+                let assignedlist = new Array;
+                if (!err && usersRow.length > 0) {
+                //for displaying assigned skillset in viewuser
+                listSkills(function(skilllist){ //for selecting assigned skillset
+                    usersRow.forEach(element => {   
+                        assigned = element.template_assigned.toString().split('/');
+                        assigned.forEach(assignedskills =>{
+                            if(assignedskills != ''){
+                                assignedlist.push(skilllist[assignedskills-1].template);
+                            }
+                        })
+                        element.template_assigned = assignedlist;
+                        assignedlist = [];
+                    });
+                    res.render('viewuser', { loginPage: true, logineduser, usersRow});
+                })
+                    
                 }
             });
         });
