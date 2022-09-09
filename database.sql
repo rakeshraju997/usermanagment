@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2022 at 10:02 AM
+-- Generation Time: Sep 09, 2022 at 05:20 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.24
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `usermanagement`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `skill_action`
+--
+
+CREATE TABLE `skill_action` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `try_1` varchar(45) NOT NULL,
+  `try_count` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `skill_action`
+--
+
+INSERT INTO `skill_action` (`id`, `user_id`, `try_1`, `try_count`) VALUES
+(1, 1, '/4-5/2-3,4/1-1,2', 1),
+(2, 2, '/1-1/3-7', 1);
 
 -- --------------------------------------------------------
 
@@ -42,7 +63,10 @@ INSERT INTO `template_lists` (`id`, `list_items`, `description`, `template_id`) 
 (1, 'list item 1', 'description 1', 1),
 (2, 'list item 2', 'description 2', 1),
 (3, 'list item usersnnknknlkrfe', 'grgrebcfbgfhfj', 2),
-(4, 'list item fasfnklnfljewjr', 'ggregegevdfvdfgre', 2);
+(4, 'list item fasfnklnfljewjr', 'ggregegevdfvdfgre', 2),
+(5, 'list item 1 1', 'greghtuyiumkm', 4),
+(6, 'dasttretgg', 'g5y54yh5hhghgfh', 4),
+(7, 'list item 3', 'frett34', 3);
 
 -- --------------------------------------------------------
 
@@ -62,7 +86,9 @@ CREATE TABLE `template_main` (
 
 INSERT INTO `template_main` (`id`, `template`, `status`) VALUES
 (1, 'OSCE', 'active'),
-(2, 'CBT', 'active');
+(2, 'CBT', 'active'),
+(3, 'IELTS', 'active'),
+(4, 'IELTS2', 'active');
 
 -- --------------------------------------------------------
 
@@ -86,13 +112,19 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `role`, `template_assigned`, `status`) VALUES
-(1, 'Rakesh', '', 'rakesh@gmail.com', 'admin1', 'admin', '', 'active'),
-(2, 'Raju', '', 'rakeshraju997@gmail.com', 'admin', 'tutor', '', 'active'),
-(3, 'student', '', 'student@g.com', 'admin', 'candidate', '', 'active');
+(1, 'Rakesh', '', 'rakesh@gmail.com', 'admin1', 'admin', '3/2/4/1', 'active'),
+(2, 'Raju', '', 'rakeshraju997@gmail.com', 'admin', 'tutor', '/1/3', 'active'),
+(3, 'student', '', 'student@g.com', 'admin', 'candidate', '2', 'active');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `skill_action`
+--
+ALTER TABLE `skill_action`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `template_lists`
@@ -117,16 +149,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `skill_action`
+--
+ALTER TABLE `skill_action`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `template_lists`
 --
 ALTER TABLE `template_lists`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `template_main`
 --
 ALTER TABLE `template_main`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`

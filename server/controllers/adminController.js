@@ -476,8 +476,7 @@ exports.skillaction = (req, res) =>{
                     connection.query('SELECT * FROM template_lists WHERE template_id = ?',[main[0].id], (err, list, field) => {
                     //when done with the connection,release it
                     connection.release();
-                    console.log(main[0].id)
-                        res.render('viewskills', { loginPage: true, logineduser, main, list });
+                        res.render('skillsactionview', { loginPage: true, logineduser, main, list, userid : req.params.id });
                     });  
                 }else{
                     console.log(err);
@@ -485,5 +484,59 @@ exports.skillaction = (req, res) =>{
             });
         });       
         
+    });
+}
+
+exports.skillactioninsert = (req, res) => {
+    session = req.session;
+    const { list } = req.body;
+    loginedUser(session, function (logineduser) {
+
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+
+            connection.query('SELECT * FROM skill_action WHERE user_id = ?', [req.params.id], (err, currenttry, field) => {
+                if (!err) {
+                    i = 1;
+                    while (i <= currenttry[0].try_count) {  // update try_count
+                        try_ = 'try_' + i;
+                        i++;
+                        
+                        if (currenttry[0][try_].includes(req.params.skillset + '-')) {
+                            couloumn_new = 'try_' + i;
+                        } else {
+                            couloumn_new = try_;break;
+                        }
+                    }
+
+                    try_count = couloumn_new.replace('try_','');
+                    if(try_count > currenttry[0].try_count){
+                        subquery = ", try_count = "+ try_count;
+                    }else{
+                        subquery = '';
+                    }
+
+                    let query_insert = "UPDATE skill_action SET " + couloumn_new + " = concat(" + couloumn_new + ", '/" + req.params.skillset + "-" + list + "') "+ subquery + " WHERE user_id = " + req.params.id;
+                    query_add_coloumn = '';
+ 
+                    if (!(couloumn_new in currenttry[0])) {
+                        query_add_coloumn = "ALTER TABLE skill_action ADD " + couloumn_new + " varchar(255) DEFAULT '' AFTER try_"+(i-1);
+                        connection.query(query_add_coloumn, (err, list, field) => {
+                        });
+
+                    }
+
+                    connection.query(query_insert, (err, list, field) => {
+                        //when done with the connection,release it
+                        connection.release();
+                        res.render('skillsactionview', { loginPage: true, logineduser});
+                    });
+                } else {
+                    console.log(err);
+                }
+            });
+        });
+
     });
 }
