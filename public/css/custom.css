@@ -62,3 +62,18 @@
     border: none !important;
     border-color: transparent !important;
 }
+
+/* .pagination li {
+    color: black;
+    float: left;
+} */
+.pagination>.active {
+    color: rgb(95, 95, 95);
+    /* background: rgb(151, 148, 148); */
+}
+.pagination>.active>li,
+.pagination>.active>li:hover,
+.pagination>.active>li:focus {
+    color: #000;
+    background: rgb(54, 54, 54);
+}

@@ -1,5 +1,5 @@
 <h4>User</h4>
-{{#each rows}}
+{{#each usersRow}}
 <div class="container">
     <div class="main-body">
     
@@ -115,7 +115,14 @@
                   <div class="card h-100">
                     <div class="card-body">
                       <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">Assignment Status</i></h6>
-                      <small>OSCE</small>
+                      <ul class="list-unstyled ">
+                        {{#each this.template_assigned}}
+                        <li class="list-group-item fs-7">
+                            <a class="d-inline" href="/admin/skillaction/{{this}}/{{../this.id}}">{{this}}</a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                      {{!-- <small>OSCE</small>
                       <div class="progress mb-3" style="height: 5px">
                         <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
@@ -134,7 +141,7 @@
                       <small>Backend API</small>
                       <div class="progress mb-3" style="height: 5px">
                         <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
+                      </div> --}}
                     </div>
                   </div>
                 {{!-- </div> --}}

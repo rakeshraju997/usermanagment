@@ -36,6 +36,13 @@ exports.adminDash = (req, res) => {
 // Display admin dash page
 exports.userList = (req, res) => {
     session = req.session;
+    if(req.query.assigned == 1){ //For assigned succfull msg in userlist page
+        alertcolor = 'success';
+        alert = 'Assigned succefully.';
+    }else{
+        alertcolor = '';
+        alert = '';
+    }
     // connect to DB
     pool.getConnection((err, connection) => {
         if (err) throw err; // not connected
@@ -48,8 +55,23 @@ exports.userList = (req, res) => {
 
             if (!err && logineduser.length > 0) {
                 connection.query('SELECT * FROM users WHERE status = "active" ORDER BY id', (err, usersRow, field) => {
-                    res.render('userlist', { loginPage: true, logineduser, usersRow });
-
+                    let assignedlist = new Array;
+                    // console.log(assigned)
+                    listSkills(function(skilllist){ //for displaying skill list in the assign popup
+                        //for displaying assigned skillset in userlist
+                        usersRow.forEach(element => {   
+                            assigned = element.template_assigned.toString().split('/');
+                            assigned.forEach(assignedskills =>{
+                                if(assignedskills != ''){
+                                    assignedlist.push(skilllist[assignedskills-1].template);
+                                }
+                            })
+                            element.template_assigned = assignedlist;
+                            assignedlist = [];
+                        });
+                        //for displaying assigned skillset in userlist
+                        res.render('userlist', { loginPage: true, logineduser, alertcolor, alert, skilllist, usersRow});
+                    }) 
                 });
 
                 connection.release();
@@ -173,11 +195,26 @@ exports.viewuser = (req, res) =>{
         pool.getConnection((err, connection) => {
             if (err) throw err; // not connected
             console.log('Connected as ID ' + connection.threadId);
-            connection.query('SELECT * FROM users WHERE id = ?',[req.params.id], (err, rows, field) => {
+            connection.query('SELECT * FROM users WHERE id = ?',[req.params.id], (err, usersRow, field) => {
                 //when done with the connection,release it
                 connection.release();
-                if (!err && rows.length > 0) {
-                    res.render('viewuser', { loginPage: true, logineduser, rows});
+                let assignedlist = new Array;
+                if (!err && usersRow.length > 0) {
+                //for displaying assigned skillset in viewuser
+                listSkills(function(skilllist){ //for selecting assigned skillset
+                    usersRow.forEach(element => {   
+                        assigned = element.template_assigned.toString().split('/');
+                        assigned.forEach(assignedskills =>{
+                            if(assignedskills != ''){
+                                assignedlist.push(skilllist[assignedskills-1].template);
+                            }
+                        })
+                        element.template_assigned = assignedlist;
+                        assignedlist = [];
+                    });
+                    res.render('viewuser', { loginPage: true, logineduser, usersRow});
+                })
+                    
                 }
             });
         });
@@ -383,5 +420,138 @@ exports.updateskills = (req, res) =>{      //need to fix empty data entry
                 
             });
         });       
+    });
+}
+
+//fetch main skillset list
+function listSkills(callback){
+    // connect to DB
+    pool.getConnection((err, connection) => {
+        if (err) throw err; // not connected
+        console.log('Connected as ID ' + connection.threadId);
+        //User the connection
+        connection.query('SELECT * FROM template_main WHERE status = "active"', (err, rows, field) => {
+            //when done with the connection,release it
+            connection.release();
+            if (!err && rows.length > 0) {
+                callback(rows);
+            }
+        });
+    });
+}
+
+exports.assignskill = (req, res) =>{
+    session = req.session;
+    loginedUser(session, function (logineduser) {
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            connection.query('SELECT template_assigned FROM users WHERE id = ?',[req.params.id], (err, assigned, field) => {
+                assigned = assigned[0].template_assigned.toString().split('/');
+                let assignedlist='',alreadyassigned;
+                assigned.forEach(element => {
+                    assignedlist+= element+'/';
+                    if(element == req.body.skill){
+                        alreadyassigned = true;
+                    }
+                });
+                if(!alreadyassigned){
+                    assignedlist+= req.body.skill;
+                }else{
+                    assignedlist = assignedlist.slice(0, -1)
+                }
+                console.log(assignedlist);
+                connection.query('UPDATE users SET template_assigned = ? WHERE id = ?',[assignedlist,req.params.id], (err, main, field) => {
+                    if (!err) {
+                        //when done with the connection,release it
+                        connection.release();
+                        res.redirect('/admin/userlist/?assigned=1');
+                    }else{
+                        res.redirect('/admin/userlist/?assigned=0');
+                    }
+                });
+            });
+        });       
+        
+    });
+}
+
+exports.skillaction = (req, res) =>{
+    session = req.session;
+
+    loginedUser(session, function (logineduser) {
+
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+
+            connection.query('SELECT * FROM template_main WHERE template = ?',[req.params.skillset], (err, main, field) => {
+
+                if (!err) {
+                    connection.query('SELECT * FROM template_lists WHERE template_id = ?',[main[0].id], (err, list, field) => {
+                    //when done with the connection,release it
+                    connection.release();
+                        res.render('skillsactionview', { loginPage: true, logineduser, main, list, userid : req.params.id });
+                    });  
+                }else{
+                    console.log(err);
+                }
+            });
+        });       
+        
+    });
+}
+
+exports.skillactioninsert = (req, res) => {
+    session = req.session;
+    const { list } = req.body;
+    loginedUser(session, function (logineduser) {
+
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+
+            connection.query('SELECT * FROM skill_action WHERE user_id = ?', [req.params.id], (err, currenttry, field) => {
+                if (!err) {
+                    i = 1;
+                    while (i <= currenttry[0].try_count) {  // update try_count
+                        try_ = 'try_' + i;
+                        i++;
+                        
+                        if (currenttry[0][try_].includes(req.params.skillset + '-')) {
+                            couloumn_new = 'try_' + i;
+                        } else {
+                            couloumn_new = try_;break;
+                        }
+                    }
+
+                    try_count = couloumn_new.replace('try_','');
+                    if(try_count > currenttry[0].try_count){
+                        subquery = ", try_count = "+ try_count;
+                    }else{
+                        subquery = '';
+                    }
+
+                    let query_insert = "UPDATE skill_action SET " + couloumn_new + " = concat(" + couloumn_new + ", '/" + req.params.skillset + "-" + list + "') "+ subquery + " WHERE user_id = " + req.params.id;
+                    query_add_coloumn = '';
+ 
+                    if (!(couloumn_new in currenttry[0])) {
+                        query_add_coloumn = "ALTER TABLE skill_action ADD " + couloumn_new + " varchar(255) DEFAULT '' AFTER try_"+(i-1);
+                        connection.query(query_add_coloumn, (err, list, field) => {
+                        });
+
+                    }
+
+                    connection.query(query_insert, (err, list, field) => {
+                        //when done with the connection,release it
+                        connection.release();
+                        res.render('skillsactionview', { loginPage: true, logineduser});
+                    });
+                } else {
+                    console.log(err);
+                }
+            });
+        });
+
     });
 }
