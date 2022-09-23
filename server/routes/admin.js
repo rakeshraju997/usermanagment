@@ -26,4 +26,7 @@ router.post('/admin/assignskill/:id',authUser(),authUserRole(['admin']),adminCon
 
 router.get('/admin/skillaction/:skillset/:id',authUser(),authUserRole(['admin']),adminController.skillaction);
 router.post('/admin/skillaction/:skillset/:id',authUser(),authUserRole(['admin']),adminController.skillactioninsert);
+
+router.get('/admin/resultview/:skillset/:id',authUser(),authUserRole(['admin']),adminController.resultview);
+
 module.exports = router;
