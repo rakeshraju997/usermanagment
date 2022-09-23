@@ -462,6 +462,9 @@ exports.assignskill = (req, res) =>{
                 }
                 console.log(assignedlist);
                 connection.query('UPDATE users SET template_assigned = ? WHERE id = ?',[assignedlist,req.params.id], (err, main, field) => {
+                    connection.query('INSERT INTO assigned_list SET user_id = ?, template_id = ?, date = ?',[req.params.id,req.body.skill,req.body.date], (err, main, field) => {
+                    });
+
                     if (!err) {
                         //when done with the connection,release it
                         connection.release();

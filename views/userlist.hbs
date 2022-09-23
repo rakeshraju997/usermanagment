@@ -125,7 +125,9 @@
                         <option value="{{this.id}}">{{this.template}}</option>
                         {{/each}}
                     </select>
+                    <input class="my-2" id="calandar"/>
                 </div>
+                <input type="hidden" name="date">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Yes</button>
@@ -135,6 +137,27 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    function getValue() {
+    var dateStr = $('#calandar').val()//.data("DateTimePicker").date();
+    const [timeComponents, dateComponents] = dateStr.split(' ');
+    const [day, month, year] = dateComponents.split('/');
+    const [hours, minutes] = timeComponents.split(':');
+    const date = new Date(+year, month - 1, +day, +hours, +minutes);
+    const unixTimestamp = Math.floor(date.getTime() / 1000);
+    console.log(unixTimestamp);
+    $("input[name='date']").val(unixTimestamp);
+    }
+    $('#calandar').datetimepicker({
+            uiLibrary: 'bootstrap4',
+            modal: false,
+            iconsLibrary: 'fontawesome',
+            footer: true
+    });
+    $("#submitcalander").click(function(){
+        getValue();
+    });
+    </script>
 <script>
     $(document).on("click", ".deleteuser", function () {
      var userID = $(this).data('id');
