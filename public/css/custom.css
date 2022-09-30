@@ -1,3 +1,4 @@
+@import './main.scss';
 .profiletext{
     width: 50px;
     height: 50px;
@@ -77,3 +78,14 @@
     color: #000;
     background: rgb(54, 54, 54);
 }
+
+.list-active{
+    background-color: #2620e4;
+    color: white;
+}
+.avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
