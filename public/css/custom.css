@@ -126,10 +126,3 @@
 .test-auth {
     margin: 15px;
 }
-
-.bg-image {
-    background-color: #3b37fe;
-    border: 14px solid #f8f9fa;
-    background-size: cover;
-    background-position: center center;
-}
