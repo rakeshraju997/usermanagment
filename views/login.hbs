@@ -1,24 +1,140 @@
-<div class="row justify-content-center d-flex">
-    <div class="col-8 col-sm-8 col-lg-4 rounded-2 border p-4">
-        <form action="/login" method="POST">
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Username or email</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" name="email"
-                    aria-describedby="emailHelp">
+<div class="container-fluid">
+    <div class="row no-gutter">
+        <!-- The image half -->
+        <div class="col-md-4 d-none d-md-flex bg-image" style="border-radius: 10px 0px 0px 10px;">
+            <div class="col-lg-11 col-xl-11 mx-auto">
+
+                <h4 class="mt-3 text-white">LOGO</h4>
+
+
+                <div class="mb-3 mt-5">
+                    <h3 class="text-white"> The best in-person OSCE Training center in the UK.</h3>
+                    <p class="text-white mt-3">Our OSCE training offers the best in the industry ans is a unique
+                        opportunity
+                        to gain hands-on the experience in the field</p>
+                </div>
+
+                <div class="col-lg-11 col-xl-11 mx-auto mt-4 mb-4 p-3 carousel owl-carousel"
+                    style="bottom: 0;background-color: #2620e4; box-shadow: 2px 3px 9px #0404047a; border-radius:10px;">
+                    <div class="card card-1">
+                        <div class="">
+                            <div class="text-white">
+                                <div class="testimonial"> "Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                    Magni dolores."</div>
+                                <div class="test-img"> <img
+                                        src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                                        alt="">
+                                </div>
+                                <div class="test-auth"> Arun <br><span class="text-muted">Customer</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-2">
+                        <div class="">
+                            <div class="text-white">
+                                <div class="testimonial"> "Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                    Magni dolores."</div>
+                                <div class="test-img"> <img
+                                        src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                                        alt="">
+                                </div>
+                                <div class="test-auth"> Arun <br><span class="text-muted">Customer</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-3">
+                        <div class="">
+                            <div class="text-white">
+                                <div class="testimonial"> "Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                    Magni dolores."</div>
+                                <div class="test-img"> <img
+                                        src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                                        alt="">
+                                </div>
+                                <div class="test-auth"> Arun <br><span class="text-muted">Customer</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-4">
+                        <div class="">
+                            <div class="text-white">
+                                <div class="testimonial"> "Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                    Magni dolores."</div>
+                                <div class="test-img"> <img
+                                        src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                                        alt="">
+                                </div>
+                                <div class="test-auth"> Arun <br><span class="text-muted">Customer</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" id="exampleInputPassword1">
+        </div>
+
+        <!-- The content half -->
+        <div class="col-md-8 bg-light" style="border-radius: 0 10px 10px 0;">
+            <div class="login d-flex align-items-center py-5">
+
+                <!-- Demo content-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-9 mx-auto">
+                            <h2 class=" text-dark fw-bold">Login</h2>
+                            <form action="/login" method="POST">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1" name="email"
+                                        aria-describedby="emailHelp">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                                    <input type="password" class="form-control" name="password"
+                                        id="exampleInputPassword1">
+                                </div>
+                                {{#if userNotFound}}
+                                <div class="alert h-2 alert-warning alert-dismissible fade show" role="alert">
+                                    {{userNotFound}}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                                {{/if}}
+                                <div class="col-3 d-grid mt-5">
+                                    <button class="btn btn-primary" type="submit">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div><!-- End -->
+
             </div>
-            {{#if userNotFound}}
-            <div class="alert h-2 alert-warning alert-dismissible fade show" role="alert">
-             {{userNotFound}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {{/if}}
-            <div class="col-12 d-grid">
-                <button class="btn btn-primary" type="submit">Submit</button>
-            </div>
-        </form>
+        </div><!-- End -->
+
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script>
+    $(".carousel").owlCarousel({
+        margin: 20,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 2000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false
+            },
+            600: {
+                items: 1,
+                nav: false
+            },
+            1000: {
+                items: 1,
+                nav: false
+            }
+        }
+    });
+</script>
