@@ -1,59 +1,752 @@
-<div class="row">
-  <div class="col-2 bg-white card vh-100 text-white fw-semibold" style="backgroundcolor:white">
-    <ul class="list-group text-black fw-semibold">
-        <li class="list-group-item list-group-item-action rounded px-2 py-2 list-active my-1"><i class="bi bi-1-circle me-3"></i>Dashboard</li>
-        <li class="list-group-item list-group-item-action rounded border-0 px-2 py-2  my-1"><i class="bi bi-1-circle me-3"></i>Candidate</li>
-        <li class="list-group-item list-group-item-action rounded border-0 px-2 py-2 my-1"><i class="bi bi-1-circle me-3"></i>Skills</li>
-        <li class="list-group-item list-group-item-action rounded border-0 px-2 py-2 my-1"><i class="bi bi-1-circle me-3"></i>Timeline</li>
-        <li class="list-group-item list-group-item-action rounded border-0 px-2 py-2 my-1 "><i class="bi bi-1-circle me-3"></i>Calander</li>
-        
-      </ul>
+<style>
+  input,
+button,
+textarea {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+}
+
+
+/* Basis */
+
+.btn {
+   /* font-family: 'Open Sans';
+    font-size: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background: #fff;
+    color: #262626;
+    border-radius: 10px;
+    height: 50px;
+    font-weight: 600;
+    min-width: 100px;
+    padding: 0px 20px;
+    transition: 0.2s ease;
+    cursor: pointer;
+    outline: 0;*/
+}
+
+.btn:hover {
+    color: #FFF;
+    background: #455AF7;
+}
+
+.btn-small {
+    min-width: 50px;
+}
+
+
+.btn-day {
+    font-family: 'Open Sans';
+    font-size: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background: rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 99;
+    outline: 0;
+    border-radius: 10px;
+    transition: 0.4s all;
+}
+
+.btn-day.active {
+    color: #FFF;
+    font-weight: 600;
+    z-index: 99;
+}
+
+.btn-day.active::before {
+    position: absolute;
+    content: '';
+    width: 40px;
+    height: 40px;
+    background: #455AF7;
+    border-radius: 10px;
+    z-index: -1;
+}
+
+.text-field {
+    padding: 10px;
+    height: 50px;
+    width: 200px;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    margin: 0px 10px 0 0;
+}
+
+.title {
+    font-size: 1.3em;
+}
+
+.subtitle {
+    font-size: 1.1em;
+}
+
+/* Calendar */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background: #ecf1f8;
+}
+
+.calendar-assets {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+}
+
+#currentDate{
+  text-align:center;
+  font-size:20px;
+}
+
+.field {
+    display: flex;
+    width: auto;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.field label {
+    margin: 2px;
+}
+
+.form-input {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-assets {
+    display: flex;
+    justify-content: space-between;
+    width: 324px;
+}
+
+
+
+.day-assets .btn:nth-child(2) i {
+    padding: 0 10px 0 0 !important;
+}
+
+.calendar {
+    height: 370px;
+    width: 324px;
+    border-radius: 18px;
+    background: #ffffff;
+	  padding: 10px;
+	  user-select: none;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 18px 18px 0px 0px;
+    padding: 15px;
+    height: 50px;
+    width: 100%;
+    color: #262626;
+}
+
+.month {
+    font-size: 0.7em;
+}
+
+.icon {
+    padding: 10px;
+    font-size: 1em;
+    margin: 0 0 0 5px;
+    background: #ffffff;
+    color: #455af7;
+    border: none;
+    cursor: pointer;
+    outline: 0;
+}
+
+.icon:hover {
+    cursor: pointer;
+}
+
+#calendar {
+    width: 100%;
+}
+
+.weekends th {
+    font-size: 1em;
+    color: gray;
+    font-weight: 400;
+    width: 40px;
+    margin: 10px 0;
+}
+
+#calendar tr {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    margin: 3px;
+}
+
+#calendar td {
+    display: flex;
+    height: 40px;
+    width: 40px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 99;
+}
+</style>
+
+<script>
+   const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+];
+
+const weekdays = ["Sunday", "Monday", "Tuesday", "Wensday", "Thursday", "Friday", "Saturday"];
+
+
+
+// Váriavel principal
+let date = new Date();
+
+// Função que retorna a data atual do calendário 
+function getCurrentDate(element, asString) {
+    if (element) {
+        if (asString) {
+            return element.textContent = weekdays[date.getDay()] + ', ' + date.getDate() + " de " + months[date.getMonth()] + " de " + date.getFullYear();
+        }
+        return element.value = date.toISOString().substr(0, 10);
+    }
+    return date;
+}
+
+
+// Função principal que gera o calendário
+function generateCalendar() {
+
+    // Pega um calendário e se já existir o remove
+    const calendar = document.getElementById('calendar');
+    if (calendar) {
+        calendar.remove();
+    }
+
+    // Cria a tabela que será armazenada as datas
+    const table = document.createElement("table");
+    table.id = "calendar";
+
+    // Cria os headers referentes aos dias da semana
+    const trHeader = document.createElement('tr');
+    trHeader.className = 'weekends';
+    weekdays.map(week => {
+        const th = document.createElement('th');
+        const w = document.createTextNode(week.substring(0, 3));
+        th.appendChild(w);
+        trHeader.appendChild(th);
+    });
+
+    // Adiciona os headers na tabela
+    table.appendChild(trHeader);
+
+    //Pega o dia da semana do primeiro dia do mês
+    const weekDay = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        1
+    ).getDay();
+
+    //Pega o ultimo dia do mês
+    const lastDay = new Date(
+        date.getFullYear(),
+        date.getMonth() + 1,
+        0
+    ).getDate();
+
+    let tr = document.createElement("tr");
+    let td = '';
+    let empty = '';
+    let btn = document.createElement('button');
+    let week = 0;
+
+    // Se o dia da semana do primeiro dia do mês for maior que 0(primeiro dia da semana);
+    while (week < weekDay) {
+        td = document.createElement("td");
+        empty = document.createTextNode(' ');
+        td.appendChild(empty);
+        tr.appendChild(td);
+        week++;
+    }
+
+    // Vai percorrer do 1º até o ultimo dia do mês
+    for (let i = 1; i <= lastDay;) {
+        // Enquanto o dia da semana for < 7, ele vai adicionar colunas na linha da semana
+        while (week < 7) {
+            td = document.createElement('td');
+            let text = document.createTextNode(i);
+            btn = document.createElement('button');
+            btn.className = "btn-day";
+            btn.addEventListener('click', function () { changeDate(this) });
+            week++;
+
+
+
+            // Controle para ele parar exatamente no ultimo dia
+            if (i <= lastDay) {
+                i++;
+                btn.appendChild(text);
+                td.appendChild(btn)
+            } else {
+                text = document.createTextNode(' ');
+                td.appendChild(text);
+            }
+            tr.appendChild(td);
+        }
+        // Adiciona a linha na tabela
+        table.appendChild(tr);
+
+        // Cria uma nova linha para ser usada
+        tr = document.createElement("tr");
+
+        // Reseta o contador de dias da semana
+        week = 0;
+    }
+    // Adiciona a tabela a div que ela deve pertencer
+    const content = document.getElementById('table');
+    content.appendChild(table);
+    changeActive();
+    changeHeader(date);
+    document.getElementById('date').textContent = date;
+    getCurrentDate(document.getElementById("currentDate"), true);
+    getCurrentDate(document.getElementById("date"), false);
+}
+
+// Altera a data atráves do formulário
+function setDate(form) {
+    let newDate = new Date(form.date.value);
+    date = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() + 1);
+    generateCalendar();
+    return false;
+}
+
+// Método Muda o mês e o ano do topo do calendário
+function changeHeader(dateHeader) {
+    const month = document.getElementById("month-header");
+    if (month.childNodes[0]) {
+        month.removeChild(month.childNodes[0]);
+    }
+    const headerMonth = document.createElement("h1");
+    const textMonth = document.createTextNode(months[dateHeader.getMonth()].substring(0, 3) + " " + dateHeader.getFullYear());
+    headerMonth.appendChild(textMonth);
+    month.appendChild(headerMonth);
+}
+
+// Função para mudar a cor do botão do dia que está ativo
+function changeActive() {
+    let btnList = document.querySelectorAll('button.active');
+    btnList.forEach(btn => {
+        btn.classList.remove('active');
+    });
+    btnList = document.getElementsByClassName('btn-day');
+    for (let i = 0; i < btnList.length; i++) {
+        const btn = btnList[i];
+        if (btn.textContent === (date.getDate()).toString()) {
+            btn.classList.add('active');
+        }
+    }
+}
+
+// Função que pega a data atual
+function resetDate() {
+    date = new Date();
+    generateCalendar();
+}
+
+// Muda a data pelo numero do botão clicado
+function changeDate(button) {
+    let newDay = parseInt(button.textContent);
+    date = new Date(date.getFullYear(), date.getMonth(), newDay);
+    generateCalendar();
+}
+
+// Funções de avançar e retroceder mês e dia
+function nextMonth() {
+    date = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+    generateCalendar(date);
+}
+
+function prevMonth() {
+    date = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+    generateCalendar(date);
+}
+
+
+function prevDay() {
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+    generateCalendar();
+}
+
+function nextDay() {
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+    generateCalendar();
+}
+
+document.onload = generateCalendar(date);
+
+</script>
+
+{{!-- <!-- Icons. Uncomment required icon fonts -->
+<link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+
+<!-- Core CSS -->
+<link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
+<link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+
+
+<!-- Helpers -->
+<script src="../assets/vendor/js/helpers.js"></script> --}}
+</head>
+
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <!-- Content -->
+
+          <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="row">
+              <div class="col-lg-8 mb-4 order-lg-1 order-1 h-50">
+                <div class="card h-50">
+                  <div class="d-flex align-items-end row">
+                    <div class="col-sm-12">
+                      <div class="card-body">
+                        <h5 class="card-title text-primary">Todays Session</h5>
+                        <ul class="list-group  fw-semibold">
+                          <li class="list-group-item rounded-2 mb-2">
+                            <span class="row">
+                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
+                                    OSCE</span></span></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                  Out</button></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                              </div>
+                            </span>
+                          </li>
+                          <li class="list-group-item rounded-2 mb-2">
+                            <span class="row">
+                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
+                                    OSCE</span></span></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                  Out</button></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                              </div>
+                            </span>
+                          </li>
+                          <li class="list-group-item rounded-2 mb-2">
+                            <span class="row">
+                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
+                                    OSCE</span></span></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                  Out</button></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                              </div>
+                            </span>
+                          </li>
+                          <li class="list-group-item rounded-2 mb-2">
+                            <span class="row">
+                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
+                                    OSCE</span></span></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                  Out</button></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                              </div>
+                            </span>
+                          </li>
+                          </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 order-lg-2 order-3 h-50">
+                <div class="row">
+                  <div class=" col-lg-12 order-1 mb-4">
+                    <div class="card h-100">
+                      <div class="card-header">
+
+                        <div class="calendar-assets">
+                          <h1 id="currentDate"></h1>
+                          <div class="field">
+                            <label for="date">Pesquisa por data</label>
+                            <form class="form-input" id="date-search" onsubmit="return setDate(this)">
+                              <input type="date" class="text-field" name="date" id="date" required>
+                              <button type="submit" class="btn btn-small" title="Pesquisar"><i class="fas fa-search"></i></button>
+                            </form>
+                          </div>
+                          <div class="day-assets">
+                            <button class="btn" onclick="prevDay()" title="Dia anterior"><i class="fas fa-chevron-left"></i> </button>
+                            <button class="btn" onclick="resetDate()" title="Dia atual"><i class="fas fa-calendar-day"></i> Hoje</button>
+                            <button class="btn" onclick="nextDay()" title="Próximo dia"><i class="fas fa-chevron-right"></i> </button>
+                          </div>
+                        </div>
+                        <div class="calendar" id="table">
+                          <div class="header">
+                            <!-- Aqui é onde ficará o h1 com o mês e o ano -->
+                            <div class="month" id="month-header">
+                        
+                            </div>
+                            <div class="buttons">
+                              <button class="icon" onclick="prevMonth()" title="Mês anterior"><i class="fas fa-chevron-left"></i></button>
+                              <button class="icon" onclick="nextMonth()" title="Próximo mês"><i class="fas fa-chevron-right "></i></button>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="card-body px-0">
+                        <div class="tab-content p-0">
+                          <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
+                            <div class="d-flex p-4 pt-3">
+                              <div class="avatar flex-shrink-0 me-3">
+                                <img src="../assets/img/icons/unicons/wallet.png" alt="User" />
+                              </div>
+                              <div>
+                                <small class="text-muted d-block">Total Balance</small>
+                                <div class="d-flex align-items-center">
+                                  <h6 class="mb-0 me-1">$459.10</h6>
+                                  <small class="text-success fw-semibold">
+                                    <i class="bx bx-chevron-up"></i>
+                                    42.9%
+                                  </small>
+                                </div>
+                              </div>
+                            </div>
+                            <div id="incomeChart"></div>
+                            <div class="d-flex justify-content-center pt-4 gap-2">
+                              <div class="flex-shrink-0">
+                                <div id="expensesOfWeek"></div>
+                              </div>
+                              <div>
+                                <p class="mb-n1 mt-1">Expenses This Week</p>
+                                <small class="text-muted">$39 less than last week</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            {{!-- </div>
+            <div class="row"> --}}
+              <div class="col-lg-8 mb-4 order-lg-3 order-2 h-50">
+                <div class="card h-50">
+                  <div class="d-flex align-items-end row">
+                    <div class="col-sm-12">
+                      <div class="card-body">
+                        <h5 class="card-title text-primary">Todays Session</h5>
+                        <ul class="list-group  fw-semibold">
+                          <li class="list-group-item rounded-2 mb-2">
+                            <span class="row">
+                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
+                                    OSCE</span></span></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                  Out</button></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                              </div>
+                            </span>
+                          </li>
+                          <li class="list-group-item rounded-2 mb-2">
+                            <span class="row">
+                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
+                                    OSCE</span></span></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                  Out</button></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                              </div>
+                            </span>
+                          </li>
+                          <li class="list-group-item rounded-2 mb-2">
+                            <span class="row">
+                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
+                                    OSCE</span></span></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                  Out</button></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                              </div>
+                            </span>
+                          </li>
+                          <li class="list-group-item rounded-2 mb-2">
+                            <span class="row">
+                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
+                                    OSCE</span></span></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                  Out</button></div>
+                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                              </div>
+                            </span>
+                          </li>
+                          </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 order-lg-4 order-4 h-50">
+                <div class="row">
+                  <div class=" col-lg-12 order-1 mb-4">
+                    <div class="card h-100">
+                      <div class="card-header">
+                        <ul class="nav nav-pills" role="tablist">
+                          <li class="nav-item">
+                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                              data-bs-target="#navs-tabs-line-card-income" aria-controls="navs-tabs-line-card-income"
+                              aria-selected="true">
+                              Income
+                            </button>
+                          </li>
+                          <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab">Expenses</button>
+                          </li>
+                          <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab">Profit</button>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="card-body px-0">
+                        <div class="tab-content p-0">
+                          <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
+                            <div class="d-flex p-4 pt-3">
+                              <div class="avatar flex-shrink-0 me-3">
+                                <img src="../assets/img/icons/unicons/wallet.png" alt="User" />
+                              </div>
+                              <div>
+                                <small class="text-muted d-block">Total Balance</small>
+                                <div class="d-flex align-items-center">
+                                  <h6 class="mb-0 me-1">$459.10</h6>
+                                  <small class="text-success fw-semibold">
+                                    <i class="bx bx-chevron-up"></i>
+                                    42.9%
+                                  </small>
+                                </div>
+                              </div>
+                            </div>
+                            <div id="incomeChart"></div>
+                            <div class="d-flex justify-content-center pt-4 gap-2">
+                              <div class="flex-shrink-0">
+                                <div id="expensesOfWeek"></div>
+                              </div>
+                              <div>
+                                <p class="mb-n1 mt-1">Expenses This Week</p>
+                                <small class="text-muted">$39 less than last week</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!--/ Transactions -->
+          </div>
+        </div>
+        <!-- / Content -->
+
+        <!-- Footer -->
+        <footer class="content-footer footer bg-footer-theme">
+          <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+            <div class="mb-2 mb-md-0">
+              ©
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              , made with ❤️ by
+              <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+            </div>
+            <div>
+              <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
+              <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
+
+              <a href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                target="_blank" class="footer-link me-4">Documentation</a>
+
+              <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues" target="_blank"
+                class="footer-link me-4">Support</a>
+            </div>
+          </div>
+        </footer>
+        <!-- / Footer -->
+
+        <div class="content-backdrop fade"></div>
+      </div>
+      <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
   </div>
-  
-  <div class="col-6">
-    <div class="card h-50 p-3">
-      Todays Session
-        <ul class="list-group  fw-semibold">
-          <li class="list-group-item rounded-2">
-            <span class="row">
-              <div class="col-6"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2" alt=""> Anjima Gopal</div>
-              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check Out</button></div>
-              <div class="col-3 text-center align-items-right d-flex"><button class="btn btn-sm btn-primary">Evaluate</button></div>
-            </span>
-          </li>
-          <li class="list-group-item rounded-2">
-            <span class="row">
-              <div class="col-6"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2" alt=""> Anjima Gopal</div>
-              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check Out</button></div>
-              <div class="col-3 text-center align-items-right d-flex"><button class="btn btn-sm btn-primary">Evaluate</button></div>
-            </span>
-          </li>
-          <li class="list-group-item rounded-2">
-            <span class="row">
-              <div class="col-6"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2" alt=""> Anjima Gopal</div>
-              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check Out</button></div>
-              <div class="col-3 text-center align-items-right d-flex"><button class="btn btn-sm btn-primary">Evaluate</button></div>
-            </span>
-          </li>
-          <li class="list-group-item rounded-2">
-            <span class="row">
-              <div class="col-6"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2" alt=""> Anjima Gopal</div>
-              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check Out</button></div>
-              <div class="col-3 text-center align-items-right d-flex"><button class="btn btn-sm btn-primary">Evaluate</button></div>
-            </span>
-          </li>
-        </ul>
-    </div>
-    <div>
-      Upcoming Session
-    </div>
+
+  <!-- Overlay -->
+  <div class="layout-overlay layout-menu-toggle"></div>
   </div>
-  <div class="col-4">
-    <div>
-      Calander
-    </div>
-    <div>
-      Session
-    </div>
-  </div>
-</div>
+  <!-- / Layout wrapper -->
+
+  {{!-- <div class="buy-now">
+    <a href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/" target="_blank"
+      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
+  </div> --}}
+
+
+  {{!-- <script src="../assets/vendor/js/menu.js"></script>
+  <!-- endbuild -->
+
+  <!-- Main JS -->
+  <script src="../assets/js/main.js"></script> --}}
