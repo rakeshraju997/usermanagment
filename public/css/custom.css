@@ -79,8 +79,34 @@
     background: rgb(54, 54, 54);
 }
 
+/* LOGIN PAGE */
+.bg-image {
+    background-color: #357caf;
+    border: 14px solid #f8f9fa;
+    background-size: cover;
+    background-position: center center;
+}
+
+.carousel .card {
+    background: #357caf;
+}
+
+.test-img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 10px 10px;
+    float: left;
+}
+
+.test-auth {
+    margin: 15px;
+}
+
+/* login */
 .list-active{
-    background-color: #2620e4;
+    background-color: #357caf;
     color: white;
 }
 .avatar {
