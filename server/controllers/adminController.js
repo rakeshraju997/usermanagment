@@ -14,21 +14,19 @@ const pool = mysql.createPool({
 // Display admin dash page
 exports.adminDash = (req, res) => {
     session = req.session;
-    //connect to DB
-    pool.getConnection((err, connection) => {
-        if (err) throw err; // not connected
-        console.log('Connected as ID ' + connection.threadId);
-
-        //User the connection
-        connection.query('SELECT * FROM users WHERE id = ?', [session.userid], (err, logineduser, field) => {
-
-            //when done with the connection,release it
-            connection.release();
-            logineduser[0].activeTab = 1;
-            if (!err && logineduser.length > 0) {
-                res.render('admin', { loginPage: true, logineduser });
-            }
-
+    loginedUser(session, function(logineduser){
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+            console.log('Connected as ID ' + connection.threadId);
+            connection.query('SELECT A.user_id,A.template_id,B.first_name,B.last_name,C.template FROM assigned_list A INNER JOIN users B ON A.user_id = B.id JOIN template_main C ON A.template_id = C.id WHERE FROM_UNIXTIME(date,"%Y-%m-%d") = CURDATE();', (err, todayUsers, field) => {
+            //     //when done with the connection,release it
+                connection.release();
+                logineduser[0].activeTab = 1;
+                if (!err) {
+                    res.render('admin', { loginPage: true, logineduser, todayUsers});
+                }
+            });
         });
     });
 }

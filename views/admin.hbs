@@ -223,52 +223,21 @@ textarea {
                     <div class="col-sm-12">
                       <div class="card-body">
                         <h5 class="card-title text-primary">Todays Session</h5>
+                        {{#each todayUsers}}
                         <ul class="list-group  fw-semibold">
                           <li class="list-group-item rounded-2 mb-2">
                             <span class="row">
                               <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
-                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
-                                    OSCE</span></span></div>
+                                  alt=""><span class="d-grid">{{this.first_name}} {{this.last_name}}<span class="fs-7">Skill:
+                                    {{this.template}}</span></span></div>
                               <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
-                                  Out</button></div>
+                                  Out {{this.template_id}}</button></div>
                               <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
                               </div>
                             </span>
                           </li>
-                          <li class="list-group-item rounded-2 mb-2">
-                            <span class="row">
-                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
-                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
-                                    OSCE</span></span></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
-                                  Out</button></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
-                              </div>
-                            </span>
-                          </li>
-                          <li class="list-group-item rounded-2 mb-2">
-                            <span class="row">
-                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
-                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
-                                    OSCE</span></span></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
-                                  Out</button></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
-                              </div>
-                            </span>
-                          </li>
-                          <li class="list-group-item rounded-2 mb-2">
-                            <span class="row">
-                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
-                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
-                                    OSCE</span></span></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
-                                  Out</button></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
-                              </div>
-                            </span>
-                          </li>
-                          </ul>
+                        </ul>
+                        {{/each}}
                       </div>
                     </div>
                   </div>
@@ -304,7 +273,7 @@ textarea {
                   <div class="d-flex align-items-end row">
                     <div class="col-sm-12">
                       <div class="card-body">
-                        <h5 class="card-title text-primary">Todays Session</h5>
+                        <h5 class="card-title text-primary">Upcoming Session</h5>
                         <ul class="list-group  fw-semibold">
                           <li class="list-group-item rounded-2 mb-2">
                             <span class="row">
