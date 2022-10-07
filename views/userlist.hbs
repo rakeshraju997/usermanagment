@@ -1,142 +1,157 @@
-<div class="d-flex m-2">
-    <h1 class="col-3">Users</h1>
-    <span class="col-9  d-flex justify-content-end">
-        <a href="/admin/adduser" type="button" class="btn btn-primary p-2 d-flex align-items-center">Add User</a>
-    </span>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex m-2">
+            <h3 class="col-3">Users</h3>
+            <span class="col-9  d-flex justify-content-end">
+                <a href="/admin/adduser" type="button" class="btn btn-primary btn-sm p-2 d-flex align-items-center">Add User</a>
+            </span>
+        </div>
+        {{#if alert}}
+        <div class="alert alert-{{alertcolor}} alert-dismissible fade show" role="alert">
+            {{alert}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {{/if}}
 
-</div>
-{{#if alert}}
-<div class="alert alert-{{alertcolor}} alert-dismissible fade show" role="alert">
-    {{alert}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{{/if}}
+        <div class="col-2 form-group pb-3">
+            <label class="pb-1 fs-7">No. of Rows:</label>
+            <!--		Show Numbers Of Rows 		-->
+            <select class="form-control text-basetext fs-7" name="state" id="maxRows">
+                <option value="5000">Show ALL Rows</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="70">70</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+        <div class="table-responsive-lg bdr">
+            <table class="table rounded text-basetext" id="table-id">
+            <thead class="fs-8 fw-light">
+                <tr>
+                    <th scope="col">NAME</th>
+                    <th scope="col">ASSIGNED</th>
+                    <th scope="col">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                {{#each usersRow}}
+                <tr>
+                    <td class="col align-left p-3">
+                        <div class="d-flex flex-row align-items-center">
+                            <div
+                                class="profiletext text-primary bg-dark  rounded my-auto m-2 d-flex align-items-center justify-content-center">
+                                <span>RR</span>
+                            </div>
+                            <div
+                                style="display:flex;flex-direction:column;justify-content: space-around;align-items: left;">
+                                <div class="d-block fs-6">{{this.first_name}}</div>
+                                <div class="d-block fs-7">{{this.email}}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="col align-left p-3">
+                        <div class="d-flex flex-row align-items-center">
+                            <ul class="list-unstyled ">
+                                {{#each this.template_assigned}}
+                                <li class="list-group-item fs-7">
+                                    <a class="d-inline" href="/admin/skillaction/{{this}}/{{../this.id}}">{{this}}</a>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </td>
+                    <td class="col align-left p-3">
+                        <div class="d-flex align-items-center ">
+                            <a type="button" href="/admin/viewuser/{{this.id}}"
+                                class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">View</a>
+                            <a type="button" href="/admin/updateuser/{{this.id}}"
+                                class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">Update</a>
+                            <a type="button"
+                                class="deleteuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold"
+                                data-bs-toggle="modal" data-id="{{this.id}}"
+                                data-bs-target="#deleteusermodel">Delete</a>
+                            <a type="button"
+                                class="assignuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold"
+                                data-bs-toggle="modal" data-id="{{this.id}}"
+                                data-bs-target="#assignskillmodel">Assign</a>
 
-<div class="col-2 form-group pb-3">
-    <label class="pb-1 fs-7">No. of Rows:</label>
-    <!--		Show Numbers Of Rows 		-->
-    <select class="form-control text-basetext fs-7" name="state" id="maxRows">
-        <option value="5000">Show ALL Rows</option>
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="70">70</option>
-        <option value="100">100</option>
-    </select>
-</div>
+                        </div>
 
-<table class="table border rounded text-basetext" id="table-id">
-    <thead class="bg-secondary bg-opacity-25 fs-8 fw-light">
-        <tr>
-            <th scope="col">NAME</th>
-            <th scope="col">ASSIGNED</th>
-            <th scope="col">ACTIONS</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each usersRow}}
-        <tr>
-            <td class="col align-left p-3">
-                <div class="d-flex flex-row align-items-center">
-                    <div class="profiletext bg-secondary bg-opacity-25 rounded my-auto m-2 d-flex align-items-center justify-content-center">
-                        <span>RR</span>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        </div>
+        
+
+        <!--Start Pagination -->
+        <div class='pagination-container'>
+            <nav>
+                <ul class="pagination">
+                    <li class="btn btn-secondary rounded-5 m-2" data-page="prev">
+                        <span> &#8592</span>
+                    </li>
+                    <!--	Here the JS Function Will Add the Rows -->
+                    <li class="btn btn-secondary rounded-5 m-2" data-page="next" id="prev">
+                        <span> &#8594</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Modal User Delete-->
+        <div class="modal fade" id="deleteusermodel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Remove User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div style="display:flex;flex-direction:column;justify-content: space-around;align-items: left;">
-                        <div class="d-block fs-6">{{this.first_name}}</div>
-                        <div class="d-block fs-7">{{this.email}}</div>
+                    <div class="modal-body">
+                        Delete the selected user?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a type="button" class="btn btn-primary deleteconfirm">Yes</a>
                     </div>
                 </div>
-            </td>
-            <td class="col align-left p-3">
-                <div class="d-flex flex-row align-items-center">
-                    <ul class="list-unstyled ">
-                        {{#each this.template_assigned}}
-                        <li class="list-group-item fs-7">
-                            <a class="d-inline" href="/admin/skillaction/{{this}}/{{../this.id}}">{{this}}</a>
-                        </li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </td>
-            <td class="col align-left p-3">
-                <div class="d-flex align-items-center ">
-                    <a type="button" href="/admin/viewuser/{{this.id}}" class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">View</a>
-                    <a type="button" href="/admin/updateuser/{{this.id}}" class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">Update</a>
-                    <a type="button" class="deleteuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold" data-bs-toggle="modal" data-id="{{this.id}}" data-bs-target="#deleteusermodel">Delete</a>
-                    <a type="button" class="assignuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold" data-bs-toggle="modal" data-id="{{this.id}}" data-bs-target="#assignskillmodel">Assign</a>
-                
-                </div>
+            </div>
+        </div>
 
-            </td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-
-<!--Start Pagination -->
-<div class='pagination-container'>
-    <nav>
-        <ul class="pagination">
-            <li class="btn btn-secondary rounded-5 m-2" data-page="prev">
-                <span> &#8592</span>
-            </li>
-            <!--	Here the JS Function Will Add the Rows -->
-            <li class="btn btn-secondary rounded-5 m-2" data-page="next" id="prev">
-                <span> &#8594</span>
-            </li>
-        </ul>
-    </nav>
-</div>
-
-<!-- Modal User Delete-->
-<div class="modal fade" id="deleteusermodel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Remove User</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Delete the selected user?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-primary deleteconfirm">Yes</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Skill Assign-->
-<div class="modal fade" id="assignskillmodel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="/admin/assignskill/" class="mb-0 assignform" method="POST">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Select Skill Set</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Modal Skill Assign-->
+        <div class="modal fade" id="assignskillmodel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="/admin/assignskill/" class="mb-0 assignform" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Select Skill Set</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <select class="form-select text-basetext" name="skill">
+                                {{#each skilllist}}
+                                <option value="{{this.id}}">{{this.template}}</option>
+                                {{/each}}
+                            </select>
+                            <input class="my-2" id="calandar" />
+                        </div>
+                        <input type="hidden" name="date">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Yes</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-body">
-                    <select class="form-select text-basetext" name="skill">
-                        {{#each skilllist}}
-                        <option value="{{this.id}}">{{this.template}}</option>
-                        {{/each}}
-                    </select>
-                    <input class="my-2" id="calandar"/>
-                </div>
-                <input type="hidden" name="date">
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Yes</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
     function getValue() {
     var dateStr = $('#calandar').val()//.data("DateTimePicker").date();

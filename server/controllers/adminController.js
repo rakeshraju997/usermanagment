@@ -24,6 +24,7 @@ exports.adminDash = (req, res) => {
 
             //when done with the connection,release it
             connection.release();
+            logineduser[0].activeTab = 1;
             if (!err && logineduser.length > 0) {
                 res.render('admin', { loginPage: true, logineduser });
             }
@@ -69,6 +70,7 @@ exports.userList = (req, res) => {
                             element.template_assigned = assignedlist;
                             assignedlist = [];
                         });
+                        logineduser[0].activeTab = 2;
                         //for displaying assigned skillset in userlist
                         res.render('userlist', { loginPage: true, logineduser, alertcolor, alert, skilllist, usersRow});
                     }) 
@@ -230,6 +232,7 @@ exports.deleteuser = (req, res) =>{
             console.log('Connected as ID ' + connection.threadId);
             connection.query('UPDATE users SET status =? WHERE id = ?',['inactive',req.params.id], (err, rows, field) => {
                 //when done with the connection,release it
+                logineduser[0].activeTab = 2;
                 connection.release();
                 if (!err) {
                     res.render('userlist', { loginPage: true, logineduser, alertcolor: 'success', alert:'User Removed succefully.'});
@@ -250,6 +253,7 @@ exports.templatelist = (req, res) => {
             connection.query('SELECT * FROM template_main ORDER BY id', (err, templateRow, field) => {
                 //when done with the connection,release it
                 connection.release();
+                logineduser[0].activeTab = 3;
                 if (!err) {
                     res.render('templatelist', { loginPage: true, logineduser, templateRow});
                 }
@@ -262,7 +266,6 @@ exports.templatelist = (req, res) => {
 exports.addtemplate = (req, res) => {
     session = req.session;
     const {template} =req.body;
-    console.log(template)
     loginedUser(session, function (logineduser) {
         // connect to DB
         pool.getConnection((err, connection) => {
@@ -271,7 +274,6 @@ exports.addtemplate = (req, res) => {
             connection.query('INSERT INTO template_main SET template = ?',[template], (err, result, field) => {
                 //when done with the connection,release it
                 connection.release();
-                console.log(result.insertId);
                 if (!err) {
                     res.render('addtemplate', { loginPage: true, logineduser, templateID: result.insertId});
                 }else{
@@ -340,7 +342,6 @@ exports.viewskills = (req, res) =>{
                     connection.query('SELECT * FROM template_lists WHERE template_id = ?',[req.params.id], (err, list, field) => {
                     //when done with the connection,release it
                     connection.release();
-                    console.log(main, list)
                         res.render('viewskills', { loginPage: true, logineduser, main, list });
                     });  
                 }else{
@@ -386,7 +387,6 @@ exports.updateskills = (req, res) =>{      //need to fix empty data entry
         if (req.body.hasOwnProperty(key)) {
           let value = req.body[key];
           value = value.toString().split(',');
-          console.log(value[0])
           if(value[0] == ''){
             value[0] = 'NULL';
           }
@@ -460,7 +460,6 @@ exports.assignskill = (req, res) =>{
                 }else{
                     assignedlist = assignedlist.slice(0, -1)
                 }
-                console.log(assignedlist);
                 connection.query('UPDATE users SET template_assigned = ? WHERE id = ?',[assignedlist,req.params.id], (err, main, field) => {
                     connection.query('INSERT INTO assigned_list SET user_id = ?, template_id = ?, date = ?',[req.params.id,req.body.skill,req.body.date], (err, main, field) => {
                     });

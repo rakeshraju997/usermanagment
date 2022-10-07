@@ -115,33 +115,35 @@
                 
                     <div class="menu-inner-shadow"></div>
                 {{#each logineduser}}
+                {{#switch this.activeTab}}
+                {{logineduser.activeTab}}
                     <ul class="menu-inner py-1">
                         <!-- Dashboard -->
-                        <li class="menu-item active">
+                        <li class="menu-item {{#case 1}}active{{/case}}">
                             <a href="/admin" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                                 <div data-i18n="Analytics">Dashboard</div>
                             </a>
                         </li>
-                        <li class="menu-item">
+                        <li class="menu-item {{#case 2}}active{{/case}}">
                             <a href="/{{this.role}}/userlist" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-user-circle"></i>
                                 <div data-i18n="Analytics">Users</div>
                             </a>
                         </li>
-                        <li class="menu-item">
+                        <li class="menu-item {{#case 3}}active{{/case}}">
                             <a href="/{{this.role}}/templatelist" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-edit"></i>
                                 <div data-i18n="Analytics">Skills</div>
                             </a>
                         </li>
-                        <li class="menu-item">
+                        <li class="menu-item {{#case 4}}active{{/case}}">
                             <a href="index.html" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-time-five"></i>
                                 <div data-i18n="Analytics">Timeline</div>
                             </a>
                         </li>
-                        <li class="menu-item">
+                        <li class="menu-item {{#case 5}}active{{/case}}">
                             <a href="index.html" class="menu-link">
                                 <i class="menu-icon tf-icons bx bxs-calendar"></i>
                                 <div data-i18n="Analytics">Calender</div>
@@ -187,6 +189,8 @@
                         {{!-- <li class="menu-header small text-uppercase">
                             <span class="menu-header-text">Pages</span>
                         </li> --}}
+                        {{/switch}}
+                        </ul>
                 </aside>
                 <!-- Layout container -->
                 <div class="layout-page">

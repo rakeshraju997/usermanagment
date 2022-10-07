@@ -1,73 +1,85 @@
-<div class="d-flex m-2">
-    <h1 class="col-3">Templates</h1>
-    <span class="col-9  d-flex justify-content-end">
-        <a href="/admin/addtemplate" type="button" class="btn btn-primary p-2 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addtemplate">Add Template</a>
-    </span>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex m-2">
+            <h3 class="col-3">Templates</h3>
+            <span class="col-9  d-flex justify-content-end">
+                <a href="/admin/addtemplate" type="button" class="btn btn-primary btn-sm p-2 d-flex align-items-center "
+                    data-bs-toggle="modal" data-bs-target="#addtemplate">Add Template</a>
+            </span>
 
-</div>
-{{#if alert}}
-<div class="alert alert-{{alertcolor}} alert-dismissible fade show" role="alert">
-    {{alert}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{{/if}}
+        </div>
+        {{#if alert}}
+        <div class="alert alert-{{alertcolor}} alert-dismissible fade show" role="alert">
+            {{alert}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {{/if}}
+        <div class="table-responsive-lg bdr">
+            <table class="table text-basetext">
+                <thead class="fs-8 fw-light">
+                    <tr>
+                        <th scope="col">NAME</th>
+                        <th scope="col">NO. ASSIGNED</th>
+                        <th scope="col">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each templateRow}}
+                    <tr>
+                        <td class="col align-left p-3">
+                            <div class="d-flex flex-row align-items-center">
+                                <div
+                                    style="display:flex;flex-direction:column;justify-content: space-around;align-items: left;">
+                                    <div class="d-block fs-6">{{this.template}}</div>
+                                    {{!-- <div class="d-block fs-7">{{this.email}}</div> --}}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="col align-left p-3">
+                            <div class="d-flex flex-row align-items-center">3</div>
+                        </td>
+                        <td class="col align-left p-3">
+                            <div class="d-flex align-items-center ">
+                                <a type="button" href="/admin/viewskills/{{this.id}}"
+                                    class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">View</a>
+                                <a type="button" href="/admin/updateskills/{{this.id}}"
+                                    class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">Update</a>
+                                <a type="button"
+                                    class="deleteuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold"
+                                    data-bs-toggle="modal" data-id="{{this.id}}" data-bs-target="#deleteusermodel">Delete</a>
+                            </div>
+        
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        
 
-<table class="table border rounded text-basetext">
-    <thead class="bg-secondary bg-opacity-25 fs-8 fw-light">
-        <tr>
-            <th scope="col">NAME</th>
-            <th scope="col">NO. ASSIGNED</th>
-            <th scope="col">ACTIONS</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each templateRow}}
-        <tr>
-            <td class="col align-left p-3">
-                <div class="d-flex flex-row align-items-center">
-                    <div style="display:flex;flex-direction:column;justify-content: space-around;align-items: left;">
-                        <div class="d-block fs-6">{{this.template}}</div>
-                        {{!-- <div class="d-block fs-7">{{this.email}}</div> --}}
-                    </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addtemplate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="/admin/addtemplate" class="mb-0" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Enter Template Name</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                {{!-- <label for="exampleInputPassword1" class="form-label">Password</label> --}}
+                                <input type="text" class="form-control" placeholder="Name..." name="template">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary deleteconfirm">Next</button>
+                        </div>
+                    </form>
                 </div>
-            </td>
-            <td class="col align-left p-3">
-                <div class="d-flex flex-row align-items-center">3</div>
-            </td>
-            <td class="col align-left p-3">
-                <div class="d-flex align-items-center ">
-                    <a type="button" href="/admin/viewskills/{{this.id}}" class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">View</a>
-                    <a type="button" href="/admin/updateskills/{{this.id}}" class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">Update</a>
-                    <a type="button" class="deleteuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold" data-bs-toggle="modal" data-id="{{this.id}}" data-bs-target="#deleteusermodel">Delete</a>
-                </div>
-
-            </td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-
-<!-- Modal -->
-<div class="modal fade" id="addtemplate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="/admin/addtemplate" class="mb-0" method="POST">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Enter Template Name</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        {{!-- <label for="exampleInputPassword1" class="form-label">Password</label> --}}
-                        <input type="text" class="form-control" placeholder="Name..." name="template">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary deleteconfirm">Next</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
