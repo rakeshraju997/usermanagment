@@ -29,4 +29,5 @@ router.post('/admin/skillaction/:skillset/:id',authUser(),authUserRole(['admin']
 
 router.get('/admin/resultview/:skillset/:id',authUser(),authUserRole(['admin']),adminController.resultview);
 
+router.post('/admin/selectedsessions',authUser(),authUserRole(['admin']),adminController.selectedsessions);
 module.exports = router;

@@ -581,3 +581,25 @@ exports.resultview = (req, res) =>{
         
     });
 }
+
+exports.selectedsessions = (req, res) =>{
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+
+            connection.query('SELECT A.user_id,A.template_id,B.first_name,B.last_name,C.template FROM assigned_list A INNER JOIN users B ON A.user_id = B.id JOIN template_main C ON A.template_id = C.id WHERE FROM_UNIXTIME(date ,"%Y-%m-%d") = FROM_UNIXTIME(? ,"%Y-%m-%d");',[req.body.date], (err, main, field) => {
+                if (err) {
+                    res.json({
+                        msg: 'error'
+                    });
+                } else {
+                    res.json({
+                        msg: 'success',
+                        date: req.body.date,
+                        date: main
+                    });
+                }
+            });
+        });       
+}
+

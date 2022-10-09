@@ -221,23 +221,27 @@ textarea {
                 <div class="card h-50">
                   <div class="d-flex align-items-end row">
                     <div class="col-sm-12">
-                      <div class="card-body">
-                        <h5 class="card-title text-primary">Todays Session</h5>
-                        {{#each todayUsers}}
-                        <ul class="list-group  fw-semibold">
-                          <li class="list-group-item rounded-2 mb-2">
-                            <span class="row">
-                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
-                                  alt=""><span class="d-grid">{{this.first_name}} {{this.last_name}}<span class="fs-7">Skill:
-                                    {{this.template}}</span></span></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
-                                  Out {{this.template_id}}</button></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
-                              </div>
-                            </span>
-                          </li>
-                        </ul>
-                        {{/each}}
+                      <div class="card-body" id="usersessions">
+                        <h5 class="card-title text-primary">Todays Sessions</h5>
+                        {{#if todayUsers}}
+                          {{#each todayUsers}}
+                          <ul class="list-group  fw-semibold">
+                            <li class="list-group-item rounded-2 mb-2">
+                              <span class="row">
+                                <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                    alt=""><span class="d-grid">{{this.first_name}} {{this.last_name}}<span class="fs-7">Skill:
+                                      {{this.template}}</span></span></div>
+                                <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                    Out {{this.template_id}}</button></div>
+                                <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                                </div>
+                              </span>
+                            </li>
+                          </ul>
+                          {{/each}}
+                        {{else}}
+                          <div class="text-center">No Sessions Today</div>
+                        {{/if}}
                       </div>
                     </div>
                   </div>
@@ -266,8 +270,6 @@ textarea {
                 </div>
               </div>
 
-            {{!-- </div>
-            <div class="row"> --}}
               <div class="col-lg-8 mb-4 order-lg-3 order-2 h-50">
                 <div class="card h-50">
                   <div class="d-flex align-items-end row">
@@ -559,7 +561,7 @@ function generateCalendar() {
     content.appendChild(table);
     changeActive();
     changeHeader(date);
-    document.getElementById('date').textContent = date;
+    //document.getElementById('date').textContent = date;
     getCurrentDate(document.getElementById("currentDate"), true);
     getCurrentDate(document.getElementById("date"), false);
 }
@@ -635,5 +637,42 @@ function nextDay() {
 }
 
 document.onload = generateCalendar(date);
+
+</script>
+{{!-- onclick calendar Session display --}}
+<script>
+  $(document).on('click', '.btn-day', function () {
+    let selectedDate = Date.parse($(this).text()+' '+$('#month-header').find('h6').text())+'';
+    selectedDate = selectedDate.slice(0, -3)
+    $(this).fadeOut(100);
+
+    $.ajax({
+    url: "http://localhost:5001/admin/selectedsessions",
+    type: "POST",
+    data: {
+    date: selectedDate
+    },
+    dataType: 'json',
+    success: function(result) {
+                /*var source   = $("#usersessions").html();
+                var template = Handlebars.compile(source);
+                var context = {title: 'Date'};
+                var html    = template(context);
+                console.log(html);*/
+        let content = '';
+
+        if(result.date.length != 0){
+            result.date.forEach((x) => {
+                content+= '<h5 class="card-title text-primary" id="todayTitle">'+ $(this).text()+' '+$('#month-header').find('h6').text() +' Sessions </h5><ul class="list-group  fw-semibold"><li class="list-group-item rounded-2 mb-2"><span class="row"><div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2" alt=""><span class="d-grid">'+x.first_name +' '+ x.last_name+'<span class="fs-7">Skill:'+ x.template +'</span></span></div><div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check Out '+ x.template_id +'</button></div><div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button></div></span></li></ul>';
+              });
+        }else{
+            content+= '<h5 class="card-title text-primary" id="todayTitle">'+ $(this).text()+' '+$('#month-header').find('h6').text() +' Sessions </h5><div class="text-center">No Sessions Today</div>';
+        }
+        
+             $("#usersessions").html(content);  
+    } 
+    });
+});
+
 
 </script>
