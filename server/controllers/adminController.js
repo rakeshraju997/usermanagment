@@ -21,11 +21,14 @@ exports.adminDash = (req, res) => {
             console.log('Connected as ID ' + connection.threadId);
             connection.query('SELECT A.user_id,A.template_id,B.first_name,B.last_name,C.template FROM assigned_list A INNER JOIN users B ON A.user_id = B.id JOIN template_main C ON A.template_id = C.id WHERE FROM_UNIXTIME(date,"%Y-%m-%d") = CURDATE();', (err, todayUsers, field) => {
             //     //when done with the connection,release it
+                
+                connection.query('SELECT A.user_id,A.template_id,B.first_name,B.last_name,C.template FROM assigned_list A INNER JOIN users B ON A.user_id = B.id JOIN template_main C ON A.template_id = C.id WHERE date >= UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY);', (err, upcomingUsers, field) => {
                 connection.release();
                 logineduser[0].activeTab = 1;
                 if (!err) {
-                    res.render('admin', { loginPage: true, logineduser, todayUsers});
+                    res.render('admin', { loginPage: true, logineduser, todayUsers, upcomingUsers});
                 }
+                });
             });
         });
     });

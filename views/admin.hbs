@@ -215,10 +215,11 @@ textarea {
         <div class="content-wrapper">
           <!-- Content -->
 
-          <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="flex-grow-1 container-p-y">
             <div class="row">
-              <div class="col-lg-8 mb-4 order-lg-1 order-1 h-50">
-                <div class="card h-50">
+              <div class="col-lg-8 col-md-12 d-table">
+                  <div class="col-12 mb-4 order-lg-1 order-1 h-50">
+                <div class="card h-min-50">
                   <div class="d-flex align-items-end row">
                     <div class="col-sm-12">
                       <div class="card-body" id="usersessions">
@@ -246,8 +247,40 @@ textarea {
                     </div>
                   </div>
                 </div>
+                  </div>
+                  <div class="col-12 mb-4 order-lg-3 order-2 h-50">
+                <div class="card h-min-50">
+                  <div class="d-flex align-items-end row">
+                    <div class="col-sm-12">
+                      <div class="card-body">
+                        <h5 class="card-title text-primary">Upcoming Session</h5>
+                        {{#if upcomingUsers}}
+                          {{#each upcomingUsers}}
+                          <ul class="list-group  fw-semibold">
+                            <li class="list-group-item rounded-2 mb-2">
+                              <span class="row">
+                                <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
+                                    alt=""><span class="d-grid">{{this.first_name}} {{this.last_name}}<span class="fs-7">Skill:
+                                      {{this.template}}</span></span></div>
+                                <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
+                                    Out {{this.template_id}}</button></div>
+                                <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
+                                </div>
+                              </span>
+                            </li>
+                          </ul>
+                          {{/each}}
+                        {{else}}
+                          <div class="text-center">No Sessions Today</div>
+                        {{/if}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  </div>
               </div>
-              <div class="col-lg-4 col-md-6 order-lg-2 order-3 h-50">
+              <div class="col-lg-4 col-md-12 d-md-flex d-lg-block">
+                  <div class="col-lg-12 col-md-6 order-lg-2 order-3 h-50 px-2 mb-5">
                 <div class="row">
                   <div class=" col-lg-12 order-1 mb-4">
                     <div class="card h-100">
@@ -268,112 +301,56 @@ textarea {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="col-lg-8 mb-4 order-lg-3 order-2 h-50">
-                <div class="card h-50">
-                  <div class="d-flex align-items-end row">
-                    <div class="col-sm-12">
-                      <div class="card-body">
-                        <h5 class="card-title text-primary">Upcoming Session</h5>
-                        <ul class="list-group  fw-semibold">
-                          <li class="list-group-item rounded-2 mb-2">
-                            <span class="row">
-                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
-                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
-                                    OSCE</span></span></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
-                                  Out</button></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
-                              </div>
-                            </span>
-                          </li>
-                          <li class="list-group-item rounded-2 mb-2">
-                            <span class="row">
-                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
-                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
-                                    OSCE</span></span></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
-                                  Out</button></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
-                              </div>
-                            </span>
-                          </li>
-                          <li class="list-group-item rounded-2 mb-2">
-                            <span class="row">
-                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
-                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
-                                    OSCE</span></span></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
-                                  Out</button></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
-                              </div>
-                            </span>
-                          </li>
-                          <li class="list-group-item rounded-2 mb-2">
-                            <span class="row">
-                              <div class="col-6 d-inline-flex"><img src="https://www.w3schools.com/howto/img_avatar.png" class="avatar me-2"
-                                  alt=""><span class="d-grid">Anjima Gopal <span class="fs-7">Skill:
-                                    OSCE</span></span></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Check
-                                  Out</button></div>
-                              <div class="col-3 text-center align-items-center d-flex"><button class="btn btn-sm btn-primary">Evaluate</button>
-                              </div>
-                            </span>
-                          </li>
-                          </ul>
-                      </div>
-                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-6 order-lg-4 order-4 h-50">
-                <div class="row">
-                  <div class=" col-lg-12 order-1 mb-4">
-                    <div class="card h-100">
-                      <div class="card-header">
-                        <ul class="nav nav-pills" role="tablist">
-                          <li class="nav-item">
-                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                              data-bs-target="#navs-tabs-line-card-income" aria-controls="navs-tabs-line-card-income"
-                              aria-selected="true">
-                              Income
-                            </button>
-                          </li>
-                          <li class="nav-item">
-                            <button type="button" class="nav-link" role="tab">Expenses</button>
-                          </li>
-                          <li class="nav-item">
-                            <button type="button" class="nav-link" role="tab">Profit</button>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="card-body px-0">
-                        <div class="tab-content p-0">
-                          <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
-                            <div class="d-flex p-4 pt-3">
-                              <div class="avatar flex-shrink-0 me-3">
-                                <img src="../assets/img/icons/unicons/wallet.png" alt="User" />
-                              </div>
-                              <div>
-                                <small class="text-muted d-block">Total Balance</small>
-                                <div class="d-flex align-items-center">
-                                  <h6 class="mb-0 me-1">$459.10</h6>
-                                  <small class="text-success fw-semibold">
-                                    <i class="bx bx-chevron-up"></i>
-                                    42.9%
-                                  </small>
+                  <div class="col-lg-12 col-md-6 order-lg-4 order-4 h-50 px-2">
+                    <div class="row">
+                      <div class=" col-lg-12 order-1 mb-4">
+                        <div class="card h-100">
+                          <div class="card-header">
+                            <ul class="nav nav-pills" role="tablist">
+                              <li class="nav-item">
+                                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                                  data-bs-target="#navs-tabs-line-card-income" aria-controls="navs-tabs-line-card-income"
+                                  aria-selected="true">
+                                  Income
+                                </button>
+                              </li>
+                              <li class="nav-item">
+                                <button type="button" class="nav-link" role="tab">Expenses</button>
+                              </li>
+                              <li class="nav-item">
+                                <button type="button" class="nav-link" role="tab">Profit</button>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body px-0">
+                            <div class="tab-content p-0">
+                              <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
+                                <div class="d-flex p-4 pt-3">
+                                  <div class="avatar flex-shrink-0 me-3">
+                                    <img src="../assets/img/icons/unicons/wallet.png" alt="User" />
+                                  </div>
+                                  <div>
+                                    <small class="text-muted d-block">Total Balance</small>
+                                    <div class="d-flex align-items-center">
+                                      <h6 class="mb-0 me-1">$459.10</h6>
+                                      <small class="text-success fw-semibold">
+                                        <i class="bx bx-chevron-up"></i>
+                                        42.9%
+                                      </small>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div id="incomeChart"></div>
-                            <div class="d-flex justify-content-center pt-4 gap-2">
-                              <div class="flex-shrink-0">
-                                <div id="expensesOfWeek"></div>
-                              </div>
-                              <div>
-                                <p class="mb-n1 mt-1">Expenses This Week</p>
-                                <small class="text-muted">$39 less than last week</small>
+                                <div id="incomeChart"></div>
+                                <div class="d-flex justify-content-center pt-4 gap-2">
+                                  <div class="flex-shrink-0">
+                                    <div id="expensesOfWeek"></div>
+                                  </div>
+                                  <div>
+                                    <p class="mb-n1 mt-1">Expenses This Week</p>
+                                    <small class="text-muted">$39 less than last week</small>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -381,9 +358,7 @@ textarea {
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
-
             </div>
 
             <!--/ Transactions -->
@@ -400,17 +375,17 @@ textarea {
                 document.write(new Date().getFullYear());
               </script>
               , made with ❤️ by
-              <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+              {{!-- <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a> --}}
             </div>
             <div>
-              <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-              <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
+              {{!-- <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a> --}}
+              {{!-- <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a> --}}
 
-              <a href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                target="_blank" class="footer-link me-4">Documentation</a>
+              {{!-- <a href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                target="_blank" class="footer-link me-4">Documentation</a> --}}
 
-              <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues" target="_blank"
-                class="footer-link me-4">Support</a>
+              {{!-- <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues" target="_blank"
+                class="footer-link me-4">Support</a> --}}
             </div>
           </div>
         </footer>
