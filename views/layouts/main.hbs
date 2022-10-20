@@ -28,7 +28,10 @@
         <!-- Core CSS -->
         <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
         <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-
+    
+        {{!-- calendarblock --}}
+        <link rel="stylesheet" href="/css/calendarblock.css"/>
+        
 
         <!-- Helpers -->
         <script src="/assets/vendor/js/helpers.js"></script>
@@ -144,7 +147,7 @@
                             </a>
                         </li>
                         <li class="menu-item {{#case 5}}active{{/case}}">
-                            <a href="index.html" class="menu-link">
+                            <a href="/{{this.role}}/calendar" class="menu-link">
                                 <i class="menu-icon tf-icons bx bxs-calendar"></i>
                                 <div data-i18n="Analytics">Calender</div>
                             </a>
@@ -279,6 +282,8 @@
 
                 <!-- Main JS -->
                 <script src="/assets/js/main.js"></script>
+                {{!-- calendarblock --}}
+                <script src="/js/calendarblock.js"></script>
                 {{!--
                 <script src="/js/jquery.min.js"></script>
 

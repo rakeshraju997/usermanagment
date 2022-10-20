@@ -606,3 +606,28 @@ exports.selectedsessions = (req, res) =>{
         });       
 }
 
+exports.calendarview = (req, res) =>{
+    session = req.session;
+
+    loginedUser(session, function (logineduser) {
+
+        // connect to DB
+        pool.getConnection((err, connection) => {
+            if (err) throw err; // not connected
+
+            // connection.query('SELECT * FROM template_main WHERE template = ?',[req.params.skillset], (err, main, field) => {
+                
+            //     if (!err) {
+            //         connection.query('SELECT * FROM template_lists WHERE template_id = ?',[main[0].id], (err, list, field) => {
+            //         //when done with the connection,release it
+            //         connection.release();
+                        res.render('calendar', { loginPage: true, logineduser });
+            //         });  
+            //     }else{
+            //         console.log(err);
+            //     }
+            // });
+        });       
+        
+    });
+}
