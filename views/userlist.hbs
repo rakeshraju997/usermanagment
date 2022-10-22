@@ -1,10 +1,13 @@
+{{#each logineduser}}{{#setVar 'userrole' this.role}}{{/setVar}}{{/each}}
 <div class="card">
     <div class="card-body">
         <div class="d-flex m-2">
             <h3 class="col-3">Users</h3>
+            {{#ifCond ../userrole "admin"}}
             <span class="col-9  d-flex justify-content-end">
                 <a href="/admin/adduser" type="button" class="btn btn-primary btn-sm p-2 d-flex align-items-center">Add User</a>
             </span>
+            {{/ifCond}}
         </div>
         {{#if alert}}
         <div class="alert alert-{{alertcolor}} alert-dismissible fade show" role="alert">
@@ -36,7 +39,7 @@
                     <th scope="col">ACTIONS</th>
                 </tr>
             </thead>
-            <tbody class="table-border-bottom-0">
+            <tbody class="table-border-bottom-0">            
                 {{#each usersRow}}
                 <tr>
                     <td class="col align-left p-3">
@@ -62,9 +65,10 @@
                                 {{/each}}
                             </ul>
                         </div>
-                    </td>
+                    </td>                
                     <td class="col align-left p-3">
                         <div class="d-flex align-items-center ">
+                            {{#ifCond ../userrole "admin"}}
                             <a type="button" href="/admin/viewuser/{{this.id}}"
                                 class="btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold">View</a>
                             <a type="button" href="/admin/updateuser/{{this.id}}"
@@ -73,6 +77,7 @@
                                 class="deleteuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold"
                                 data-bs-toggle="modal" data-id="{{this.id}}"
                                 data-bs-target="#deleteusermodel">Delete</a>
+                                {{/ifCond}}
                             <a type="button"
                                 class="assignuser btn btn-outline-secondary border border-opacity-50 mx-2 fw-semibold"
                                 data-bs-toggle="modal" data-id="{{this.id}}"

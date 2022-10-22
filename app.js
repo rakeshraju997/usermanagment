@@ -43,6 +43,12 @@ const hbs = exhbs.create({
             if (value == this.switch_value) {
               return options.fn(this);
             }
+          },
+          ifCond : function(v1, v2, options){
+            if(v1 === v2) {
+              return options.fn(this);
+            }
+            return options.inverse(this);
           }
     }
  });

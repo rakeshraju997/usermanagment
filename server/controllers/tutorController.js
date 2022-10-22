@@ -12,5 +12,25 @@ const pool = mysql.createPool({
 
 // Display admin dash page
 exports.tutorDash = (req, res) => {
-    res.render('tutor', {loginPage: false} );
+    loginedUser(session, function(logineduser){
+        logineduser[0].activeTab = 1;
+        res.render('tutor', { loginPage: true, logineduser });
+    });
  }
+
+
+ function loginedUser(session, callback){
+    // connect to DB
+    pool.getConnection((err, connection) => {
+        if (err) throw err; // not connected
+        console.log('Connected as ID ' + connection.threadId);
+        //User the connection
+        connection.query('SELECT * FROM users WHERE id = ?',[session.userid], (err, rows, field) => {
+            //when done with the connection,release it
+            connection.release();
+            if (!err && rows.length > 0) {
+                callback(rows);
+            }
+        });
+    });
+}
