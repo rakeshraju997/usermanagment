@@ -71,13 +71,13 @@ textarea {
 /* Calendar */
 
 .container {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
     min-height: 100vh;
-    background: #ecf1f8;
+    background: #ecf1f8; */
 }
 
 .calendar-assets {
